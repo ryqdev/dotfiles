@@ -1,1 +1,3 @@
 # MacConf
+
+My dotfiles.
