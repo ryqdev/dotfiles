@@ -173,7 +173,7 @@
         "command": "-workbench.files.action.compareWithSaved"
     },
     {
-        "key": "g a",
+        "key": "ctrl+g d",
         "command": "editor.action.revealDefinition",
         "when": "editorTextFocus"
     },
@@ -192,12 +192,12 @@
         "command": "-workbench.action.quickOpen"
     },
     {
-        "key": "g d",
+        "key": "ctrl+g a",
         "command": "editor.action.revealDeclaration",
         "when": "editorTextFocus && vim.mode == 'Normal'"
     },
     {
-        "key": "g r",
+        "key": "ctrl+g r",
         "command": "editor.action.goToReferences",
         "when": "editorTextFocus && vim.mode == 'Normal'"
     },
@@ -207,7 +207,7 @@
         "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
     },
     {
-        "key": "g g",
+        "key": "cmd+up",
         "command": "cursorTop",
         "when": "textInputFocus"
     },
