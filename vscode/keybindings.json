@@ -173,9 +173,9 @@
         "command": "-workbench.files.action.compareWithSaved"
     },
     {
-        "key": "g d",
+        "key": "g a",
         "command": "editor.action.revealDefinition",
-        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+        "when": "editorTextFocus"
     },
     {
         "key": "f12",
@@ -190,5 +190,30 @@
     {
         "key": "cmd+p",
         "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "g d",
+        "command": "editor.action.revealDeclaration",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "g r",
+        "command": "editor.action.goToReferences",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "shift+f12",
+        "command": "-editor.action.goToReferences",
+        "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+        "key": "g g",
+        "command": "cursorTop",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "cmd+up",
+        "command": "-cursorTop",
+        "when": "textInputFocus"
     }
 ]
