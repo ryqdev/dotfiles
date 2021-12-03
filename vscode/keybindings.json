@@ -1,0 +1,194 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "cmd+1",
+        "command": "workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "ctrl+1",
+        "command": "-workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "cmd+2",
+        "command": "workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "ctrl+2",
+        "command": "-workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "cmd+3",
+        "command": "workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "ctrl+3",
+        "command": "-workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "cmd+4",
+        "command": "workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "ctrl+4",
+        "command": "-workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "cmd+5",
+        "command": "workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "ctrl+5",
+        "command": "-workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "cmd+6",
+        "command": "workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "ctrl+6",
+        "command": "-workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "cmd+7",
+        "command": "workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "ctrl+7",
+        "command": "-workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "cmd+8",
+        "command": "workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "ctrl+8",
+        "command": "-workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "cmd+9",
+        "command": "workbench.action.openEditorAtIndex9"
+    },
+    {
+        "key": "ctrl+9",
+        "command": "-workbench.action.openEditorAtIndex9"
+    },
+    {
+        "key": "f9",
+        "command": "code-runner.run"
+    },
+    {
+        "key": "ctrl+alt+n",
+        "command": "-code-runner.run"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-cursorLineEnd",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "-cursorLineStart",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "-extension.vim_ctrl+a",
+        "when": "editorTextFocus && vim.active && vim.use<C-a> && !inDebugRepl"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-extension.vim_ctrl+e",
+        "when": "editorTextFocus && vim.active && vim.use<C-e> && !inDebugRepl"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "extension.vim_ctrl+a"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "extension.vim_ctrl+e"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorLineEnd"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "cursorLineStart"
+    },
+    {
+        "key": "ctrl+2",
+        "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "ctrl+3",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "cmd+\\",
+        "command": "editor.debug.action.toggleBreakpoint",
+        "when": "debuggersAvailable && editorTextFocus"
+    },
+    {
+        "key": "f9",
+        "command": "-editor.debug.action.toggleBreakpoint",
+        "when": "debuggersAvailable && editorTextFocus"
+    },
+    {
+        "key": "cmd+k h",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+k cmd+i",
+        "command": "-editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+\\",
+        "command": "-workbench.action.terminal.split",
+        "when": "terminalFocus && terminalProcessSupported"
+    },
+    {
+        "key": "cmd+\\",
+        "command": "-workbench.action.splitEditor"
+    },
+    {
+        "key": "cmd+\\",
+        "command": "-workbench.action.terminal.splitInstance",
+        "when": "terminalProcessSupported && terminalTabsFocus"
+    },
+    {
+        "key": "cmd+k cmd+h",
+        "command": "editor.debug.action.showDebugHover",
+        "when": "editorTextFocus && inDebugMode"
+    },
+    {
+        "key": "cmd+k cmd+i",
+        "command": "-editor.debug.action.showDebugHover",
+        "when": "editorTextFocus && inDebugMode"
+    },
+    {
+        "key": "cmd+k d",
+        "command": "-workbench.files.action.compareWithSaved"
+    },
+    {
+        "key": "g d",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "f12",
+        "command": "-editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "space space",
+        "command": "workbench.action.quickOpen",
+        "when": "editorTextFocus&&vim.mode == 'Normal'"
+    },
+    {
+        "key": "cmd+p",
+        "command": "-workbench.action.quickOpen"
+    }
+]
