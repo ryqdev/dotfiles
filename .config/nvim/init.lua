@@ -9,6 +9,9 @@ vim.g.maplocalleader = t'<Space>'
 
 vim.fn['plug#begin']()
 
+-- vim-go
+vim.cmd [[Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }]]
+
 -- Navigation plugins
 vim.cmd [[Plug 'rbgrouleff/bclose.vim']]
 vim.cmd [[Plug 'scrooloose/nerdtree']]
