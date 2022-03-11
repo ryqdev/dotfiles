@@ -1,3 +1,6 @@
+######################
+#      ZSH & P10K    #
+######################
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -9,10 +12,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/shang/.oh-my-zsh"
-
-export EDITOR=nvim
-export VISUAL="$EDITOR"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -34,16 +34,15 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
-# Uncomment the following line Gif pasting URLs and other text is messed up.
+# Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
@@ -56,8 +55,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -81,7 +81,11 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=( 
+	git
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -110,61 +114,69 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+#
 
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-
-alias r="source ranger"
-
-alias python="python3"
-alias pip="pip3"
-
-
-alias gcc="gcc-11"  
-alias cc="gcc-11" 
-alias g++="g++-11"
-alias c++="c++-11"
-
-alias ttt="python /Users/shang/Projects/macTimer/src/pyTimer.py"
-
-PATH=$PATH:/usr/local/mysql/bin
+######################
+#      CONDA         #
+######################
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/shang/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/ryan/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/shang/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/shang/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/ryan/anaconda3/etc/profile.d/conda.sh" ]; then
+	. "/home/ryan/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/shang/anaconda3/bin:$PATH"
+	export PATH="/home/ryan/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-
-alias cloud="./OhMySecureShell.sh"
-alias cloudma="./OhMySecureShellMaster.sh"
-alias cloudx1="./OhMySecureShellX1.sh"
-alias cloudx2="./OhMySecureShellX2.sh"
-
-alias c="code ."
-alias o="open ."
-PATH=$PATH:/usr/local/opt/riscv-gnu-toolchain/bin
-alias blog="cd /Users/shang/Yukun4119.github.io/_posts"
-
-alias demo="v ~/demo/demo.cpp"
-
-alias cf="source ~/autoTemplate/genCodeforces.sh"
-alias kkst="source ~/autoTemplate/genKickStart.sh"
-alias v="nvim"
-alias ve="gview"
-
-alias lcd="leetcode show -g -x -l cpp"
-alias lcu="leetcode submit "
+######################
+#      p10k          #
+######################
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+######################
+#      PROXY         #
+######################
+#export http_proxy="http://127.0.0.1:12333"
+#export https_proxy="http://127.0.0.1:12333"
+
+######################
+#      SYSTEM        #
+######################
+xset r rate 200 25
+
+[[ -s /home/ryan/.autojump/etc/profile.d/autojump.sh ]] && source /home/ryan/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u
+
+######################
+#      PATH          #
+######################
+export PATH="/home/ryan/.cargo/bin:$PATH"
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/home/ryan/.local/bin
+
+######################
+#      ALIAS         #
+######################
+alias picgo="./Applications/PicGo-2.3.0.AppImage"
+alias lc="leetcode"
+alias o="xdg-open"
+alias copy="xclip -sel clip"
+alias v="nvim"
+alias oh="~/Projects/OhMarkDown/dist/linux-unpacked/ohmarkdownv1.0 &"
+alias python="python3"
+
+
+######################
+#      EDITOR        #
+######################
+export EDITOR=nvim
+export VISUAL="$EDITOR"

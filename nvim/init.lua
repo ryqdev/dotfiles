@@ -33,8 +33,8 @@ vim.cmd [[Plug 'junegunn/fzf']]
 vim.cmd [[Plug 'junegunn/fzf.vim']]
 
 vim.cmd [[Plug 'neovim/nvim-lspconfig']]
-vim.cmd [[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]]
-vim.cmd [[Plug 'nvim-treesitter/playground']]
+--vim.cmd [[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]]
+--vim.cmd [[Plug 'nvim-treesitter/playground']]
 vim.cmd [[Plug 'hrsh7th/nvim-compe']]
 
 vim.cmd [[Plug 'tpope/vim-fugitive']]
@@ -116,7 +116,7 @@ vim.g.bufferline_echo = 0
 if vim.env.TERM == 'rxvt' or vim.env.TERM == 'termite' or vim.env.TERM == 'alacritty' then
   vim.g.solarized_visibility = 'low'
   vim.opt.background = 'dark'
-  --vim.cmd [[colorscheme solarized]]
+  vim.cmd [[colorscheme solarized]]
 end
 
 vim.cmd [[highlight! link SignColumn LineNr]]
@@ -139,24 +139,24 @@ vim.api.nvim_set_keymap("n", "<Leader>f", "<Cmd>FzfRg<CR>", { silent=true, norem
 
 -- Treesitter
 
-local treesitter = require('nvim-treesitter.configs')
+--local treesitter = require('nvim-treesitter.configs')
 
 -- Use a fork
-local treesitter_parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-treesitter_parser_configs.cpp = {
-  install_info = {
-    url = "~/dev/tree-sitter-cpp",
-    files = { "src/parser.c", "src/scanner.cc" },
-    generate_requires_npm = true,
-  },
-  maintainers = { "@theHamsta" },
-}
+--local treesitter_parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+--treesitter_parser_configs.cpp = {
+  --install_info = {
+    --url = "~/dev/tree-sitter-cpp",
+    --files = { "src/parser.c", "src/scanner.cc" },
+    --generate_requires_npm = true,
+  --},
+  --maintainers = { "@theHamsta" },
+--}
 
-treesitter.setup {
-    ensure_installed = 'maintained',
-    highlight = { enable = true, additional_vim_regex_highlighting = true },
-    --indent = { enable = true },
-}
+--treesitter.setup {
+    --ensure_installed = 'maintained',
+    --highlight = { enable = true, additional_vim_regex_highlighting = true },
+    ----indent = { enable = true },
+--}
 
 --vim.opt.foldmethod = 'expr'
 --vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -236,16 +236,15 @@ vim.cmd [[highlight LspReferenceWrite cterm=bold ctermbg=0 guibg=LightYellow]]
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
---local servers = { "clangd", "tsserver", "pylsp" }
-
---for _, lsp in ipairs(servers) do
-  --nvim_lsp[lsp].setup {
-    --on_attach = lsp_on_attach,
-    --flags = {
-      --debounce_text_changes = 150,
-    --}
-  --}
---end
+local servers = { "clangd", "tsserver", "pylsp" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = lsp_on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
 
 -- Completion
 --
@@ -318,26 +317,20 @@ autocmd FileType cpp com! -buffer -range=% Hash <line1>,<line2>P cpp -P -fprepro
 ]]
 
 vim.cmd[[
-map <F8> :call LeetcodeSubmit()<CR>
 map <F9> :call CompileRunGcc()<CR>
-map <F10> :call RunGcc()<CR>
-
-
-func! LeetcodeSubmit()
-    exec '!leetcode submit %'
-endfunc
-
 func! CompileRunGcc()
     exec "w"
     if &filetype == 'c'
         exec '!gcc % -o %<'
 "        exec '!time ./%<'
     elseif &filetype == 'cpp'
-        exec '!g++-11 % -o %<'
+        exec '!g++ % -DLOCAL -o %<'
+        exec '!./%<'
 "        exec '!time ./%<'
-"        exec '!./%<'
     elseif &filetype == 'python'
         exec '!time python %'
+    elseif &filetype == 'go'
+        exec '!go run %'
     elseif &filetype == 'sh'
         :!time bash %
 	elseif &filetype == 'java'
@@ -345,16 +338,4 @@ func! CompileRunGcc()
         exec '!time java %<'
     endif
 endfunc
-
-func! RunGcc()
-	if &filetype == 'cpp'
-        exec '!./%< code'
-	endif
-endfunc
-
 ]]
-
-vim.cmd[[
-set nofoldenable
-]]
-
