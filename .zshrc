@@ -121,20 +121,20 @@ source $ZSH/oh-my-zsh.sh
 ######################
 #      CONDA         #
 ######################
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/ryan/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/ryan/anaconda3/etc/profile.d/conda.sh" ]; then
-	. "/home/ryan/anaconda3/etc/profile.d/conda.sh"
-    else
-	export PATH="/home/ryan/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+## >>> conda initialize >>>
+## !! Contents within this block are managed by 'conda init' !!
+#__conda_setup="$('/home/ryan/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+    #eval "$__conda_setup"
+#else
+    #if [ -f "/home/ryan/anaconda3/etc/profile.d/conda.sh" ]; then
+	#. "/home/ryan/anaconda3/etc/profile.d/conda.sh"
+    #else
+	#export PATH="/home/ryan/anaconda3/bin:$PATH"
+    #fi
+#fi
+#unset __conda_setup
+## <<< conda initialize <<<
 
 ######################
 #      p10k          #
@@ -145,8 +145,8 @@ unset __conda_setup
 ######################
 #      PROXY         #
 ######################
-#export http_proxy="http://127.0.0.1:12333"
-#export https_proxy="http://127.0.0.1:12333"
+#export http_proxy="http://127.0.0.1:7890"
+#export https_proxy="http://127.0.0.1:7890"
 
 ######################
 #      SYSTEM        #
@@ -180,3 +180,19 @@ alias python="python3"
 ######################
 export EDITOR=nvim
 export VISUAL="$EDITOR"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export ANDROID_SDK=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
