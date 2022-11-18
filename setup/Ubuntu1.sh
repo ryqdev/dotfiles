@@ -1,5 +1,9 @@
 echo "changing apt source\n"
-sudo mv /etc/apt/sources.list /etc/apt/sources_backup.list
+FILE=/etc/apt/sources.list
+
+if test -f "$FILE"; then
+    sudo mv /etc/apt/sources.list /etc/apt/sources_backup.list
+fi
 
 echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
 deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
@@ -10,7 +14,7 @@ deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multive
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse focal" | sudo tee /etc/apt/sources.lists
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse focal" | sudo tee /etc/apt/sources.list
 
 sudo apt update && sudo apt upgrade -y
 
@@ -50,5 +54,9 @@ echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbunt
 sudo wget -nv https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
 sudo apt update
 sudo apt install albert
+
+
+# echo "Installing htop with snap"
+# snap install htop
 
 echo "Finished, please reboot the system"
