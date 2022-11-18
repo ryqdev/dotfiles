@@ -1,6 +1,7 @@
 echo "changing apt source\n"
 sudo mv /etc/apt/sources.list /etc/apt/sources_backup.list
-sudo echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+
+echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
 deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
 deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
 deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
@@ -9,13 +10,14 @@ deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multive
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse focal" > /etc/apt/sources.list
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse focal" | sudo tee /etc/apt/sources.lists
 
 sudo apt update && sudo apt upgrade -y
 
 echo "changing shell to zsh"
 sudo apt install zsh git curl wget htop -y
-chsh -s /bin/zsh
+
+sudo chsh -s $(which zsh)
 # Install Oh-My-Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
