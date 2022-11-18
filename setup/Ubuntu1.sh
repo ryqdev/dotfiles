@@ -21,7 +21,7 @@ sudo apt update && sudo apt upgrade -y
 echo "changing shell to zsh"
 sudo apt install zsh git curl wget htop -y
 
-sudo chsh -s $(which zsh)
+chsh -s $(which zsh)
 # Install Oh-My-Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
