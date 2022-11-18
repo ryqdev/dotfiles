@@ -1,5 +1,19 @@
+echo "changing apt source\n"
+sudo mv /etc/apt/sources.list /etc/apt/sources_backup.list
+sudo echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse focal" > /etc/apt/sources.list
+
 sudo apt update && sudo apt upgrade -y
-# change to zsh
+
+echo "changing shell to zsh"
 sudo apt install zsh git curl wget htop -y
 chsh -s /bin/zsh
 # Install Oh-My-Zsh
@@ -21,5 +35,18 @@ sudo apt install autojump -y
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo apt-get update -y
 sudo apt-get install neovim -y
+
+echo "Installing vscode with snap craft"
+sudo snap install code --classic
+
+echo "Installing spotify with snap craft"
+sudo snap install spotify
+
+echo "Installing albert with apt"
+curl https://build.opensuse.org/projects/home:manuelschneid3r/public_key | sudo apt-key add -
+echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+sudo wget -nv https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
+sudo apt update
+sudo apt install albert
 
 echo "Finished, please reboot the system"
