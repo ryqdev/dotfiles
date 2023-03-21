@@ -174,6 +174,14 @@ alias v="nvim"
 alias oh="~/Projects/OhMarkDown/dist/linux-unpacked/ohmarkdownv1.0 &"
 alias python="python3"
 
+alias reignore='git rm -r --cached . && git add .'
+alias whyignore='git check-ignore -v'
+alias gg='git lg'
+alias gb='git branch'
+alias gco='git checkout'
+alias gac="git commit -am"
+alias gs="git status"
+
 
 ######################
 #      EDITOR        #
