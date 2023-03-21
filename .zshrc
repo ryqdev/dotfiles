@@ -179,7 +179,7 @@ alias whyignore='git check-ignore -v'
 alias gg='git lg'
 alias gb='git branch'
 alias gco='git checkout'
-alias gac="git commit -am"
+alias gac="git add . && git commit"
 alias gs="git status"
 
 
