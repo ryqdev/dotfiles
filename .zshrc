@@ -151,7 +151,7 @@ source $ZSH/oh-my-zsh.sh
 ######################
 #      SYSTEM        #
 ######################
-xset r rate 200 25
+xset r rate 200 25  # for Ubuntu
 
 [[ -s /home/ryan/.autojump/etc/profile.d/autojump.sh ]] && source /home/ryan/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
@@ -181,6 +181,10 @@ alias gb='git branch'
 alias gco='git checkout'
 alias gac="git add . && git commit"
 alias gs="git status"
+
+# Tmux
+alias tn="tmux new -s"
+alias ta="tmux attach"
 
 
 ######################
