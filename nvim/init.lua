@@ -9,9 +9,6 @@ vim.g.maplocalleader = t'<Space>'
 
 vim.fn['plug#begin']()
 
--- vim-go
-vim.cmd [[Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }]]
-
 -- Navigation plugins
 vim.cmd [[Plug 'rbgrouleff/bclose.vim']]
 vim.cmd [[Plug 'scrooloose/nerdtree']]
@@ -27,17 +24,29 @@ vim.cmd [[Plug 'Raimondi/delimitMate']]
 vim.cmd [[Plug 'scrooloose/nerdcommenter']]
 vim.cmd [[Plug 'tpope/vim-sleuth']]
 vim.cmd [[Plug 'airblade/vim-gitgutter']]
+vim.cmd [[Plug 'f-person/git-blame.nvim']]
 vim.cmd [[Plug 'editorconfig/editorconfig-vim']]
 
 vim.cmd [[Plug 'junegunn/fzf']]
 vim.cmd [[Plug 'junegunn/fzf.vim']]
 
 vim.cmd [[Plug 'neovim/nvim-lspconfig']]
---vim.cmd [[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]]
---vim.cmd [[Plug 'nvim-treesitter/playground']]
-vim.cmd [[Plug 'hrsh7th/nvim-compe']]
+vim.cmd [[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]]
+vim.cmd [[Plug 'nvim-treesitter/playground']]
+vim.cmd [[Plug 'hrsh7th/nvim-cmp']]
+vim.cmd [[Plug 'hrsh7th/cmp-buffer']]
+vim.cmd [[Plug 'hrsh7th/cmp-path']]
+vim.cmd [[Plug 'hrsh7th/cmp-cmdline']]
+vim.cmd [[Plug 'hrsh7th/cmp-nvim-lsp']]
+vim.cmd [[Plug 'hrsh7th/cmp-vsnip']]
+vim.cmd [[Plug 'hrsh7th/vim-vsnip']]
 
 vim.cmd [[Plug 'tpope/vim-fugitive']]
+
+vim.cmd [[Plug 'Exafunction/codeium.vim']]
+
+--vim.cmd [[Plug 'github/copilot.vim']]
+--vim.cmd [[Plug 'hrsh7th/cmp-copilot']]
 
 -- Language specific
 --TODO
@@ -45,6 +54,8 @@ vim.cmd [[Plug 'lervag/vimtex', { 'for': 'tex' }]]
 vim.cmd [[Plug 'vim-pandoc/vim-pandoc']]
 vim.cmd [[Plug 'Vimjas/vim-python-pep8-indent']]
 vim.cmd [[Plug 'maxmellon/vim-jsx-pretty']]
+vim.cmd [[Plug 'iden3/vim-circom-syntax']]
+vim.cmd [[Plug 'tmhedberg/SimpylFold']]
 
 -- Note taking
 vim.cmd [[Plug 'lukaszkorecki/workflowish']]
@@ -68,15 +79,26 @@ vim.opt.conceallevel = 2
 vim.opt.list = true
 vim.opt.listchars = {
     tab = '» ',
+    leadmultispace = '·',
     trail = '␣',
     extends = '▶',
     precedes = '◀',
+    nbsp = '␣',
 }
 
 vim.opt.undofile = true
 
 vim.opt.autoread = true
 vim.cmd [[autocmd BufEnter,FocusGained * if mode() == 'n' && getcmdwintype() == '' | checktime | endif]]
+
+vim.cmd [[
+function! Syn()
+  for id in synstack(line("."), col("."))
+    echo synIDattr(id, "name")
+  endfor
+endfunction
+command! -nargs=0 Syn call Syn()
+]]
 
 -- Update gutters 200 ms
 vim.opt.updatetime = 200
@@ -98,6 +120,7 @@ vim.cmd [[nnoremap <silent> <expr> <CR> &buftype ==# 'quickfix' ? "\<CR>" : ":no
 
 vim.api.nvim_set_keymap('n', 'gA', ':%y+<CR>', { noremap = true })
 
+vim.opt.hidden = false
 -- Necessary for terminal buffers not to die
 vim.cmd [[autocmd TermOpen * set bufhidden=hide]]
 
@@ -113,13 +136,14 @@ vim.g.bufferline_rotate = 1
 vim.g.bufferline_fixed_index = -1
 vim.g.bufferline_echo = 0
 
-if vim.env.TERM == 'rxvt' or vim.env.TERM == 'termite' or vim.env.TERM == 'alacritty' then
+if vim.env.TERM == 'rxvt' or vim.env.TERM == 'termite' or vim.env.TERM == 'alacritty' or vim.env.TERM == 'xterm-kitty' then
   vim.g.solarized_visibility = 'low'
   vim.opt.background = 'dark'
   vim.cmd [[colorscheme solarized]]
 end
 
 vim.cmd [[highlight! link SignColumn LineNr]]
+vim.cmd [[highlight NonText ctermfg=10 cterm=NONE]]
 
 vim.opt.spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
 
@@ -131,38 +155,96 @@ vim.cmd [[set errorformat^=%-GIn\ file\ included\ %.%#]]
 
 vim.g.NERDAltDelims_c = 1
 
-vim.api.nvim_set_keymap("n", "<Leader>n", "<Cmd>silent! NERDTreeFind<CR><Cmd>NERDTreeFocus<CR>", { silent=true, noremap=true })
+vim.api.nvim_set_keymap("n", "<Leader>n", "<Cmd>NERDTreeClose<CR><Cmd>silent! NERDTreeFind<CR><Cmd>NERDTreeFocus<CR>", { silent=true, noremap=true })
 
 vim.g.fzf_command_prefix = 'Fzf'
-vim.api.nvim_set_keymap("n", "<Leader><Space>", "<Cmd>FzfFiles<CR>", { silent=true, noremap=true })
+vim.api.nvim_set_keymap("n", "<Leader><Space>", "<Cmd>call fzf#vim#gitfiles('-co --exclude-standard')<CR>", { silent=true, noremap=true })
 vim.api.nvim_set_keymap("n", "<Leader>f", "<Cmd>FzfRg<CR>", { silent=true, noremap=true })
+vim.api.nvim_set_keymap("n", "<Leader>b", "<Cmd>FzfBuffers<CR>", { silent=true, noremap=true })
 
 -- Treesitter
 
---local treesitter = require('nvim-treesitter.configs')
+local treesitter = require('nvim-treesitter.configs')
 
 -- Use a fork
---local treesitter_parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+local treesitter_parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
 --treesitter_parser_configs.cpp = {
-  --install_info = {
-    --url = "~/dev/tree-sitter-cpp",
-    --files = { "src/parser.c", "src/scanner.cc" },
-    --generate_requires_npm = true,
-  --},
-  --maintainers = { "@theHamsta" },
+--  install_info = {
+--    url = "~/dev/tree-sitter-cpp",
+--    files = { "src/parser.c", "src/scanner.cc" },
+--    generate_requires_npm = true,
+--  },
+--  maintainers = { "@theHamsta" },
 --}
 
---treesitter.setup {
-    --ensure_installed = 'maintained',
-    --highlight = { enable = true, additional_vim_regex_highlighting = true },
-    ----indent = { enable = true },
---}
+treesitter.setup {
+    ensure_installed = 'all',
+    highlight = { enable = true, additional_vim_regex_highlighting = true },
+    --indent = { enable = true },
+}
 
 --vim.opt.foldmethod = 'expr'
 --vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 --vim.opt.foldlevel = 1
 
 vim.opt.foldmethod = 'syntax'
+
+-- Completion
+--
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+
+local cmp = require('cmp')
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.mapping.confirm({ select = false }), -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'vsnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 
 -- LSP
 
@@ -208,19 +290,23 @@ local lsp_on_attach = function(client, bufnr)
 
   buf_set_keymap('n', '<Leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', '<Leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<Leader>le', '<cmd>lua vim.diagnostic.open_float({scope="c"})<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<Leader>lq', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap('n', '<Leader>lw', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  if client.server_capabilities.documentFormattingProvider then
+    buf_set_keymap('n', '<Leader>lw', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  else
+    buf_set_keymap('n', '<Leader>lw', '<cmd>echom "LSP formatting not supported"<CR>', opts)
   end
-  if client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap('v', '<Leader>lw', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
+  if client.server_capabilities.documentRangeFormattingProvider then
+    buf_set_keymap('v', '<Leader>lw', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  else
+    buf_set_keymap('v', '<Leader>lw', '<cmd>echom "LSP range formatting not supported"<CR>', opts)
   end
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.documentHighlightProvider then
     vim.cmd [[
     augroup lsp_document_highlight
     autocmd! * <buffer>
@@ -234,59 +320,29 @@ vim.cmd [[highlight LspReferenceText cterm=bold guibg=LightYellow]]
 vim.cmd [[highlight LspReferenceRead cterm=bold ctermbg=0 guibg=LightYellow]]
 vim.cmd [[highlight LspReferenceWrite cterm=bold ctermbg=0 guibg=LightYellow]]
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.offsetEncoding = "utf-8"
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "tsserver", "pylsp" }
+local servers = { "clangd", "tsserver", "pyright", "rust_analyzer", "gopls", "solc" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = lsp_on_attach,
     flags = {
       debounce_text_changes = 150,
-    }
+    },
+    capabilities = capabilities,
   }
 end
-
--- Completion
---
-vim.opt.completeopt = { 'menuone', 'noselect' }
-
-require('compe').setup {
-  enabled = true,
-  autocomplete = true,
-  documentation = true,
-
-  source = {
-    path = true,
-    buffer = true,
-    nvim_lsp = true,
-  }
+nvim_lsp["kotlin_language_server"].setup {
+  on_attach = lsp_on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  capabilities = capabilities,
+  root_dir = nvim_lsp.util.root_pattern("settings.gradle", "Makefile")
 }
-
-vim.api.nvim_set_keymap('i', '<C-Space>', 'compe#complete()', { noremap = true, silent = true, expr = true })
-vim.api.nvim_set_keymap('i', '<CR>', [[ compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' }) ]], { noremap = true, silent = true, expr = true })
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  else
-    return t "<Tab>"
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  else
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
 ------------------------------
 -- Language specific config --
@@ -295,11 +351,13 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 -- LaTeX configuration
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_compiler_progname = 'nvr'
-vim.g.vimtex_quickfix_latexlog = { fix_paths = 0 }
+--vim.g.vimtex_quickfix_latexlog = { fix_paths = 0 }
 vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_open_on_warning = 0
 
-vim.opt.printoptions:append{ paper = 'letter' }
+--vim.opt.printoptions:append{ paper = 'letter' }
+
+vim.cmd [[autocmd BufNewFile,BufReadPost *.sol set filetype=solidity]]
 
 vim.cmd [[autocmd BufNewFile,BufReadPost *.md set filetype=pandoc]]
 
@@ -316,26 +374,3 @@ command -range=% Hash <line1>,<line2>P cpp -P -fpreprocessed | tr -d '[:space:]'
 autocmd FileType cpp com! -buffer -range=% Hash <line1>,<line2>P cpp -P -fpreprocessed | tr -d '[:space:]' | md5sum
 ]]
 
-vim.cmd[[
-map <F9> :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-    exec "w"
-    if &filetype == 'c'
-        exec '!gcc % -o %<'
-"        exec '!time ./%<'
-    elseif &filetype == 'cpp'
-        exec '!g++ % -DLOCAL -o %<'
-        exec '!./%<'
-"        exec '!time ./%<'
-    elseif &filetype == 'python'
-        exec '!time python %'
-    elseif &filetype == 'go'
-        exec '!go run %'
-    elseif &filetype == 'sh'
-        :!time bash %
-	elseif &filetype == 'java'
-        exec '!javac %'
-        exec '!time java %<'
-    endif
-endfunc
-]]
