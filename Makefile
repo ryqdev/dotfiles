@@ -16,7 +16,7 @@ all: hello
 .PHONY: all
 
 hello:
-	echo "hello"
+	@echo "hello"
 
 # +---------------------+
 # |                     |
