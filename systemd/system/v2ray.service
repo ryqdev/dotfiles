@@ -5,3 +5,8 @@ After=syslog.target
 [Service]
 User=ryqdev
 ExecStart=/home/ryqdev/Desktop/v2ray-linux-64/v2ray
+
+
+# systemctl enable v2ray
+# systemctl start v2ray
+# systemctl status v2ray 
