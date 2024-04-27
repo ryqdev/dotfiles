@@ -1,0 +1,7 @@
+[Unit]
+Description=v2ray
+After=syslog.target
+
+[Service]
+User=ryqdev
+ExecStart=/home/ryqdev/Desktop/v2ray-linux-64/v2ray
