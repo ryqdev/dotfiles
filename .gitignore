@@ -1,3 +1,4 @@
+# template for .gitignore
 .DS_Store
 .idea
 .vscode
