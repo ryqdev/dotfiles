@@ -6,6 +6,8 @@ After=syslog.target
 User=ryqdev
 ExecStart=/home/ryqdev/Desktop/v2ray-linux-64/v2ray
 
+[Install]
+WantedBy=multi-user.target
 
 # systemctl enable v2ray
 # systemctl start v2ray
