@@ -84,3 +84,7 @@ unset __conda_setup
 
 setxkbmap -option caps:ctrl_modifier
 xset r rate 200 25
+
+
+# fzf in Arch Linux. From version 0.48 onwards, this can be accomplished with a single line:
+source <(fzf --zsh)
