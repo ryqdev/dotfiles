@@ -1,3 +1,6 @@
+#!/bin/bash
+
+
 # echo "changing apt source\n"
 # FILE=/etc/apt/sources.list
 
