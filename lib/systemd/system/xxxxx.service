@@ -1,0 +1,14 @@
+[Unit]
+Description=xxxxx
+After=syslog.target
+
+[Service]
+User=ryqdev
+ExecStart=<path to xxxxx>
+
+[Install]
+WantedBy=multi-user.target
+
+# systemctl enable xxxxx
+# systemctl start xxxxx
+# systemctl status xxxxx 
