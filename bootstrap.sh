@@ -10,7 +10,6 @@ source $HOME/.cargo/env
 
 # Install required packages and change shell to zsh
 echo "Changing shell to zsh and installing required packages..."
-sudo apt-get update
 sudo apt-get install -y zsh git curl wget htop
 
 # Change default shell to zsh
