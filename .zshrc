@@ -22,8 +22,25 @@ fi
 export PATH="/home/ryqdev/.local/share/JetBrains/Toolbox/scripts":$PATH
 
 
-export http_proxy="http://127.0.0.1:10809"
-export https_proxy="http://127.0.0.1:10809"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+
+proxy_on() {
+  export https_proxy=http://127.0.0.1:7890
+  export http_proxy=http://127.0.0.1:7890
+  export all_proxy=socks5://127.0.0.1:7890
+  echo "Proxy is ${GREEN}ON"
+}
+
+# Set proxy_on by default
+proxy_on
+
+proxy_off() {
+  unset https_proxy
+  unset http_proxy
+  unset all_proxy
+  echo "Proxy is ${RED}OFF"
+}
 
 ######################
 #      ALIAS         #
