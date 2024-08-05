@@ -12,10 +12,6 @@ source $HOME/.cargo/env
 echo "Changing shell to zsh and installing required packages..."
 sudo apt-get install -y zsh git curl wget htop
 
-# Install Oh-My-Zsh
-echo "Installing Oh-My-Zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 # Install zsh-autosuggestions
 echo "Installing zsh-autosuggestions..."
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
