@@ -27,8 +27,4 @@ echo "Updating .zshrc..."
     echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 } >> ${ZDOTDIR:-$HOME}/.zshrc
 
-# Source .zshrc to apply changes
-echo "Sourcing .zshrc..."
-source ${ZDOTDIR:-$HOME}/.zshrc
-
 echo "Setup complete!"
