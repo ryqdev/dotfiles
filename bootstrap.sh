@@ -1,23 +1,48 @@
-# install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+#!/bin/bash
 
-# anaconda 
-#Downloading the latest Miniconda installer for Linux. Your architecture may vary.
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Install Rust
+echo "Installing Rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+
+# Install Miniconda
+echo "Installing Miniconda..."
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p $HOME/miniconda
-eval "$(/$HOME/miniconda/bin/conda shell.zsh hook)"
+eval "$($HOME/miniconda/bin/conda shell.zsh hook)"
 
-# setup shell
-echo "changing shell to zsh"
-sudo apt install zsh git curl wget htop -y
+# Install required packages and change shell to zsh
+echo "Changing shell to zsh and installing required packages..."
+sudo apt-get update
+sudo apt-get install -y zsh git curl wget htop
 
+# Change default shell to zsh
 chsh -s $(which zsh)
+
 # Install Oh-My-Zsh
+echo "Installing Oh-My-Zsh..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# auto suggestion
+# Install zsh-autosuggestions
+echo "Installing zsh-autosuggestions..."
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-# zsh-syntax-highlighting
+# Install zsh-syntax-highlighting
+echo "Installing zsh-syntax-highlighting..."
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+
+# Update .zshrc to source the plugins
+echo "Updating .zshrc..."
+{
+    echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+} >> ${ZDOTDIR:-$HOME}/.zshrc
+
+# Source .zshrc to apply changes
+echo "Sourcing .zshrc..."
+source ${ZDOTDIR:-$HOME}/.zshrc
+
+echo "Setup complete!"
