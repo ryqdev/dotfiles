@@ -8,12 +8,6 @@ echo "Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
 
-# Install Miniconda
-echo "Installing Miniconda..."
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-bash ~/miniconda.sh -b -p $HOME/miniconda
-eval "$($HOME/miniconda/bin/conda shell.zsh hook)"
-
 # Install required packages and change shell to zsh
 echo "Changing shell to zsh and installing required packages..."
 sudo apt-get update
