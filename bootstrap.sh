@@ -12,9 +12,6 @@ source $HOME/.cargo/env
 echo "Changing shell to zsh and installing required packages..."
 sudo apt-get install -y zsh git curl wget htop
 
-# Change default shell to zsh
-chsh -s $(which zsh)
-
 # Install Oh-My-Zsh
 echo "Installing Oh-My-Zsh..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
