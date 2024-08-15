@@ -35,4 +35,11 @@ sudo apt update -y
 sudo apt install lazygit
 
 
+# Setting up dotfiles
+rm ~/.zshrc
+ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
+rm ~/.gitconfig
+ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig 
+
+
 echo "Setup complete!"
