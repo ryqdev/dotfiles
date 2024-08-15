@@ -21,13 +21,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 echo "Installing zsh-syntax-highlighting..."  
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting  
 
-# Update .zshrc to source the plugins  
-echo "Updating .zshrc..."  
-{  
-    echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"  
-    echo "source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"  
-} >> ${ZDOTDIR:-$HOME}/.zshrc  
-
 # Install lazygit  
 echo "Installing lazygit..."  
 sudo add-apt-repository ppa:lazygit-team/release -y
