@@ -32,15 +32,14 @@ proxy_on() {
   echo "Proxy is ${GREEN}ON"
 }
 
-# Set proxy_on by default
-proxy_on
-
 proxy_off() {
   unset https_proxy
   unset http_proxy
   unset all_proxy
   echo "Proxy is ${RED}OFF"
 }
+
+proxy_off
 
 ######################
 #      ALIAS         #
