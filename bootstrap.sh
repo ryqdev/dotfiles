@@ -30,25 +30,9 @@ echo "Updating .zshrc..."
 
 # Install lazygit  
 echo "Installing lazygit..."  
-LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')  
+sudo add-apt-repository ppa:lazygit-team/release -y
+sudo apt update -y
+sudo apt install lazygit
 
-# Clean up previous downloads  
-rm -f lazygit.tar.gz  
-
-if [ -z "$LAZYGIT_VERSION" ]; then  
-    echo "Failed to retrieve lazygit version. Exiting."  
-    exit 1  
-fi  
-
-curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"  
-
-# Check if the download was successful  
-if [ ! -f lazygit.tar.gz ]; then  
-    echo "Failed to download lazygit. Exiting."  
-    exit 1  
-fi  
-
-tar xf lazygit.tar.gz lazygit  
-sudo install lazygit /usr/local/bin  
 
 echo "Setup complete!"
