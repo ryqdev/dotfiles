@@ -31,7 +31,19 @@ sudo apt install lazygit
 # Setting up dotfiles
 rm ~/.zshrc
 ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
-ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig 
+ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig
 
+# neovim
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt-get update -y
+sudo apt-get install neovim -y
+
+# Installing lazyvim
+mv ~/.config/nvim{,.bak}
+mv ~/.local/share/nvim{,.bak}
+mv ~/.local/state/nvim{,.bak}
+mv ~/.cache/nvim{,.bak}
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
 
 echo "Setup complete!"
