@@ -23,27 +23,21 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Install lazygit  
 echo "Installing lazygit..."  
-sudo add-apt-repository ppa:lazygit-team/release -y
-sudo apt update -y
-sudo apt install lazygit
-
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+sudo install lazygit /usr/local/bin
 
 # Setting up dotfiles
 rm ~/.zshrc
-ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
-ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig
 
-# neovim
-sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt-get update -y
-sudo apt-get install neovim -y
+# for github codespace
+# ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
+# ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig
 
-# Installing lazyvim
-mv ~/.config/nvim{,.bak}
-mv ~/.local/share/nvim{,.bak}
-mv ~/.local/state/nvim{,.bak}
-mv ~/.cache/nvim{,.bak}
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
+# for gitpod
+ln -s /home/gitpod/.dotfiles/.zshrc ~/.zshrc 
+ln -s /home/gitpod/.dotfiles/.gitconfig ~/.gitconfig
+
 
 echo "Setup complete!"
