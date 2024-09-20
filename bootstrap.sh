@@ -32,12 +32,12 @@ sudo install lazygit /usr/local/bin
 rm ~/.zshrc
 
 # for github codespace
-# ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
-# ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig
+ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc ~/.zshrc 
+ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig ~/.gitconfig
 
 # for gitpod
-ln -s /home/gitpod/.dotfiles/.zshrc ~/.zshrc 
-ln -s /home/gitpod/.dotfiles/.gitconfig ~/.gitconfig
+# ln -s /home/gitpod/.dotfiles/.zshrc ~/.zshrc 
+# ln -s /home/gitpod/.dotfiles/.gitconfig ~/.gitconfig
 
 
 echo "Setup complete!"
