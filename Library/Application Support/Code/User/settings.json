@@ -1,0 +1,88 @@
+{
+    "workbench.colorTheme": "Dracula Theme Soft",
+    "grammarly.files.include": [
+        "**/readme.md",
+        "**/README.md",
+        "**/*.txt",
+        "**/*.md"
+    ],
+    "files.autoSave": "onFocusChange",
+    "CodeGPT.apiKey": "CodeGPT Plus",
+    "remote.SSH.defaultExtensions": [
+        "gitpod.gitpod-remote-ssh",
+        "byted-ide.gallery"
+    ],
+    "codeium.enableConfig": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true
+    },
+    "remote.SSH.remotePlatform": {
+        "192.168.2.166": "linux",
+        "local": "linux",
+        "*.gitpod.io": "linux"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "source": "Git Bash"
+        },
+        "Arch (WSL)": {
+            "path": "C:\\Windows\\System32\\wsl.exe",
+            "args": [
+                "-d",
+                "Arch"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Arch (WSL)",
+    "remoteHub.commitDirectlyWarning": "off",
+    "redhat.telemetry.enabled": true,
+    "window.autoDetectColorScheme": true,
+    "workbench.preferredLightColorTheme": "Default Light+",
+    "python.defaultInterpreterPath": "/Users/ryqdev/anaconda3/bin/python",
+    "tabnine.experimentalAutoImports": true,
+    "files.exclude": {
+        "/Users/ryqdev/anaconda3/lib/python3.12/site-packages/polars/*": true
+    },
+    "remote.SSH.connectTimeout": 30,
+    "editor.accessibilitySupport": "off",
+    "makefile.configureOnOpen": true,
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "extensions.supportUntrustedWorkspaces": {
+        "byted-ide.dev-environment-manager": {
+            "supported": true
+        }
+    },
+    "window.restoreWindows": "none",
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": true,
+        "scminput": false
+    },
+    "workbench.layoutControl.enabled": false,
+    "window.commandCenter": false,
+    "github.codespaces.allowUnsafeConnections": true,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "database-client.autoSync": true,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "workbench.preferredDarkColorTheme": "Monokai"
+}
