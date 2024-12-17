@@ -1,3 +1,8 @@
+# Only start tmux in an interactive session and after Powerlevel10k is initialized
+if [[ $- == *i* && -z "$TMUX" && -n "$PS1" ]]; then
+    tmux attach -t default || tmux new -s default
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
