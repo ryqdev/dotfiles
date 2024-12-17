@@ -188,3 +188,6 @@ export PATH="/Users/ryqdev/anaconda3/bin":$PATH
 
 # # fzf in Arch Linux. From version 0.48 onwards, this can be accomplished with a single line:
 # source <(fzf --zsh)
+
+
+tmux attach -t default || tmux new -s default
