@@ -1,7 +1,7 @@
 # Only start tmux in an interactive session and after Powerlevel10k is initialized
-if [[ $- == *i* && -z "$TMUX" && -n "$PS1" ]]; then
-    tmux attach -t default || tmux new -s default
-fi
+# if [[ $- == *i* && -z "$TMUX" && -n "$PS1" ]]; then
+#     tmux attach -t default || tmux new -s default
+# fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
@@ -194,5 +194,3 @@ export PATH="/Users/ryqdev/anaconda3/bin":$PATH
 # # fzf in Arch Linux. From version 0.48 onwards, this can be accomplished with a single line:
 # source <(fzf --zsh)
 
-
-tmux attach -t default || tmux new -s default

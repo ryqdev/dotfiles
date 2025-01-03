@@ -48,7 +48,7 @@ if [ -z "${ZSH_VERSION:-}" ]; then
     fi
 
     # Re-run this script under Zsh (passing all arguments)
-    # exec zsh "$0" "$@"
+    exec zsh "$0" "$@"
 fi
 
 ################################################################################
