@@ -39,7 +39,7 @@ if [ -z "${ZSH_VERSION:-}" ]; then
     # Only switch if the current shell isn't Zsh
     if [ "$CURRENT_SHELL" != "zsh" ]; then
         echo "Changing default shell to Zsh..."
-        if chsh -s "$(command -v zsh)" 2>/dev/null; then
+        if sudo chsh -s "$(command -v zsh)" 2>/dev/null; then
             echo "Successfully changed shell to Zsh. Re-running script under Zsh..."
         else
             echo "WARNING: Could not change default shell automatically (lack of permissions?)."
