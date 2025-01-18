@@ -18,8 +18,7 @@ brew install bob
 brew install keepassxc
 brew install iina
 brew install spotify
-brew install macvim
-brew install dockler
+brew install docker
 
 # zsh
 brew install zsh
@@ -45,9 +44,6 @@ brew install zsh-autosuggestions
 brew install tmux
 brew install gcc
 brew insatll tree
-
-# front-end develop environment
-brew install node
 
 # install neovim
 brew install neovim
