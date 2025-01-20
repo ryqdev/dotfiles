@@ -17,11 +17,7 @@
         "plaintext": true,
         "markdown": true
     },
-    "remote.SSH.remotePlatform": {
-        "192.168.2.166": "linux",
-        "local": "linux",
-        "*.gitpod.io": "linux"
-    },
+    "remote.SSH.remotePlatform": {"192.168.2.166":"linux","local":"linux","*.gitpod.io":"linux","*.gitpod.local":"linux","*.gitpod.remote":"linux","coder-vscode.22cerdehjq8gm.pit-1.try.coder.app--root--magenta-llama-97":"linux"},
     "security.workspace.trust.untrustedFiles": "open",
     "terminal.integrated.inheritEnv": false,
     "terminal.integrated.profiles.windows": {
@@ -52,13 +48,13 @@
     "remoteHub.commitDirectlyWarning": "off",
     "redhat.telemetry.enabled": true,
     "window.autoDetectColorScheme": true,
-    "workbench.preferredLightColorTheme": "Default Light+",
+    "workbench.preferredLightColorTheme": "Solarized Light",
     "python.defaultInterpreterPath": "/Users/ryqdev/anaconda3/bin/python",
     "tabnine.experimentalAutoImports": true,
     "files.exclude": {
         "/Users/ryqdev/anaconda3/lib/python3.12/site-packages/polars/*": true
     },
-    "remote.SSH.connectTimeout": 30,
+    "remote.SSH.connectTimeout": 1800,
     "editor.accessibilitySupport": "off",
     "makefile.configureOnOpen": true,
     "cmake.pinnedCommands": [
@@ -84,5 +80,9 @@
     "git.autofetch": true,
     "database-client.autoSync": true,
     "terminal.integrated.defaultProfile.osx": "zsh",
-    "workbench.preferredDarkColorTheme": "Monokai"
+    "workbench.preferredDarkColorTheme": "Solarized Light",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "editor.fontFamily": "MesloLGS NF"
 }
