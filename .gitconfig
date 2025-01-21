@@ -1,9 +1,23 @@
-[credential]
-	helper = store
-
+[include]
+    path = ~/.gitconfig.monorepo
 [user]
 	name = ryqdev
 	email = ykshang4119@gmail.com
-
+[init]
+    defaultBranch = main
+[credential]
+	helper = store
+[core]
+    editor = nvim
+[color]
+    ui = auto
+[branch]
+    autosetuprebase = always
+[rebase]
+    autoStash = true
+[pull]
+    rebase = true
+[push]
+    default = current
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue) <%an>%Creset' --abbrev-commit

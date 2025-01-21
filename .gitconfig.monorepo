@@ -1,0 +1,6 @@
+[core]
+    commitgraph = true
+    fsmonitor = true
+    writeCommitGraph = true
+[feature]
+    manyFiles = true
