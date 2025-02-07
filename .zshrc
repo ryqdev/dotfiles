@@ -142,12 +142,6 @@ source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-sy
 source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ######################
-#      Anaconda      #
-######################
-export PATH="/Users/ryqdev/anaconda3/bin":$PATH
-
-
-######################
 #      Golang        #
 ######################
 [[ -s "/Users/ryqdev/.gvm/scripts/gvm" ]] && source "/Users/ryqdev/.gvm/scripts/gvm"
