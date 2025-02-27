@@ -136,6 +136,10 @@ alias tn="tmux new -s"
 alias ta="tmux attach"
 alias lg="lazygit"
 
+alias po="pbpaste > /tmp/old.txt"
+alias pn="pbpaste > /tmp/new.txt"
+alias pd="patdiff /tmp/old.txt /tmp/new.txt"
+
 
 source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
