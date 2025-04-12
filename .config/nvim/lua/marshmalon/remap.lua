@@ -121,6 +121,11 @@ local visual_mappings = {
 which_key.register(visual_mappings, { mode = "v" })
 
 
+local quick_live_grep = {
+  name = "Live Grep",
+  [" "] = { ":Telescope live_grep<CR>", "Find" },
+}
+which_key.register(quick_live_grep, { prefix = "<leader>" })
 --- Don't overwrite pastes in visual mode
 -- vim.keymap.set("x", "<leader>p", "\"_dP")
 
