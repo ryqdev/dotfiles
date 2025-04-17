@@ -1,0 +1,11 @@
+theme = dracula
+
+font-family = MesloLGS NF
+font-style = Regular
+font-size = 18
+font-thicken = true
+
+cursor-style = block
+cursor-style-blink = false
+
+cursor-color = #ff0078
