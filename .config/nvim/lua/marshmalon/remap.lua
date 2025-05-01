@@ -139,3 +139,13 @@ which_key.register(quick_live_grep, { prefix = "<leader>" })
 
 -- insert commands
 vim.keymap.set('i', '<Right>', '<Right>', { noremap = true }) -- Make the right arrow behave normally in insert mode
+
+
+local copy_mapping = {
+  y = {
+    name = "Copy",
+    p = { ':let @+ = expand("%:p")<CR>', "Copy full path" },
+  },
+}
+
+which_key.register(copy_mapping, { prefix = "<leader>" })
