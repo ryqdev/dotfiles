@@ -116,6 +116,17 @@ else
 fi
 
 ################################################################################
+# 10. Install powerlevel10k theme
+################################################################################
+if [ ! -d "${ZSH_CUSTOM:-"$HOME/.oh-my-zsh/custom"}/themes/powerlevel10k" ]; then
+    echo "Installing powerlevel10k..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        "${ZSH_CUSTOM:-"$HOME/.oh-my-zsh/custom"}/themes/powerlevel10k"
+else
+    echo "powerlevel10k already exists. Skipping..."
+fi
+
+################################################################################
 # 10. Install lazygit (if not installed)
 ################################################################################
 if ! command -v lazygit >/dev/null 2>&1; then
@@ -147,6 +158,7 @@ echo "Linking dotfiles..."
 # If in GitHub Codespaces:
 if [ -d /workspaces/.codespaces/.persistedshare/dotfiles ]; then
     ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.zshrc     "$HOME/.zshrc"
+    ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.p10k.zsh  "$HOME/.p10k.zsh"
     ln -s /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig "$HOME/.gitconfig"
 
 else
