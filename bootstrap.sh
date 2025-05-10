@@ -70,15 +70,15 @@ fi
 ################################################################################
 # 6. Install Rust (if not already)
 ################################################################################
-# echo "Checking for Rust..."
-# if ! command -v rustc >/dev/null 2>&1; then
-#     echo "Rust not found. Installing Rust..."
-#     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-#     # Source Rust environment
-#     source "$HOME/.cargo/env"
-# else
-#     echo "Rust is already installed. Skipping..."
-# fi
+echo "Checking for Rust..."
+if ! command -v rustc >/dev/null 2>&1; then
+    echo "Rust not found. Installing Rust..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    # Source Rust environment
+    source "$HOME/.cargo/env"
+else
+    echo "Rust is already installed. Skipping..."
+fi
 
 ################################################################################
 # 7. Install Oh My Zsh (if not installed)
