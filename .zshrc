@@ -176,4 +176,4 @@ source <(fzf --zsh)
 [[ ! -r '/Users/ryqdev/.opam/opam-init/init.zsh' ]] || source '/Users/ryqdev/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
