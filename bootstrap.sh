@@ -174,6 +174,10 @@ sudo apt install neovim -y
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
+
+echo "install fzf"
+sudo apt install fzf
+
 ################################################################################
 echo "Setup complete! Your shell is now Zsh."
 ################################################################################
