@@ -155,3 +155,6 @@ alias pd="patdiff /tmp/old.txt /tmp/new.txt"
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 
+
+. "$HOME/.local/bin/env"
+source $HOME/.local/bin/env
