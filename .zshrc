@@ -143,6 +143,7 @@ alias gb='git branch'
 alias gco='git checkout'
 alias gac="git add . && git commit"
 alias gs="git status"
+alias gr="git remote -v | awk '/origin.*push/ {print \$2}' | xargs open"
 
 # Tmux
 alias lg="lazygit"
