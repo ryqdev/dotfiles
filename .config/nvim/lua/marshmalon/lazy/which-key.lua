@@ -23,21 +23,21 @@ return {
         g = false,            -- bindings for prefixed with g
       },
     },
-    -- add operators that will trigger motion and text object completion
-    -- to enable all native operators, set the preset / operators plugin above
-    operators = { gc = "Comments" },
-    key_labels = {
-      -- override the label used to display some keys. It doesn't effect WK in any other way.
-      -- For example:
+    -- New defer configuration replaces operators
+    defer = { gc = "Comments" },
+    -- New replace configuration replaces key_labels
+    replace = {
       -- ["<space>"] = "SPC",
       -- ["<cr>"] = "RET",
       -- ["<tab>"] = "TAB",
     },
-    popup_mappings = {
+    -- New keys configuration replaces popup_mappings
+    keys = {
       scroll_down = "<c-d>", -- binding to scroll down inside the popup
       scroll_up = "<c-u>",   -- binding to scroll up inside the popup
     },
-    window = {
+    -- New win configuration replaces window
+    win = {
       border = "single",        -- none, single, double, shadow
       position = "bottom",      -- bottom, top
       margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
@@ -50,18 +50,15 @@ return {
       spacing = 3,                                                                -- spacing between columns
       align = "left",                                                             -- align columns left, center or right
     },
-    ignore_missing = false,                                                       -- enable this to hide mappings for which you didn't specify a label
-    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+    -- New filter configuration replaces ignore_missing
+    filter = function(mapping)
+      return true -- show all mappings
+    end,
     show_help = true,                                                             -- show help message on the command line when the popup is visible
     show_keys = true,                                                             -- show the currently pressed key and its label as a message in the command line
-    triggers = "auto",                                                            -- automatically setup triggers
-    -- triggers = {"<leader>"} -- or specify a list manually
-    triggers_blacklist = {
-      -- list of mode / prefixes that should never be hooked by WhichKey
-      -- this is mostly relevant for key maps that start with a native binding
-      -- most people should not need to change this
-      i = { "j", "k" },
-      v = { "j", "k" },
+    triggers = {
+      { "<auto>", mode = "nixsotc" },
+      { "<leader>", mode = { "n", "v" } },
     },
     -- disable the WhichKey popup for certain buf types and file types.
     -- Disabled by default for Telescope
