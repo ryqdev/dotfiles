@@ -23,8 +23,6 @@ return {
         g = false,            -- bindings for prefixed with g
       },
     },
-    -- New defer configuration replaces operators
-    defer = { gc = "Comments" },
     -- New replace configuration replaces key_labels
     replace = {
       -- ["<space>"] = "SPC",
@@ -45,19 +43,19 @@ return {
       winblend = 0,
     },
     layout = {
-      height = { min = 4, max = 25 },                                             -- min and max height of the columns
-      width = { min = 20, max = 50 },                                             -- min and max width of the columns
-      spacing = 3,                                                                -- spacing between columns
-      align = "left",                                                             -- align columns left, center or right
+      height = { min = 4, max = 25 }, -- min and max height of the columns
+      width = { min = 20, max = 50 }, -- min and max width of the columns
+      spacing = 3,                    -- spacing between columns
+      align = "left",                 -- align columns left, center or right
     },
     -- New filter configuration replaces ignore_missing
     filter = function(mapping)
-      return true -- show all mappings
+      return true     -- show all mappings
     end,
-    show_help = true,                                                             -- show help message on the command line when the popup is visible
-    show_keys = true,                                                             -- show the currently pressed key and its label as a message in the command line
+    show_help = true, -- show help message on the command line when the popup is visible
+    show_keys = true, -- show the currently pressed key and its label as a message in the command line
     triggers = {
-      { "<auto>", mode = "nixsotc" },
+      { "<auto>",   mode = "nixsotc" },
       { "<leader>", mode = { "n", "v" } },
     },
     -- disable the WhichKey popup for certain buf types and file types.
