@@ -130,8 +130,6 @@ unset key
 
 source fzf.zsh
 
-
-
 # alias
 alias o="open"
 alias v="nvim"
