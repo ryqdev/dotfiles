@@ -150,6 +150,8 @@ alias po="pbpaste > /tmp/old.txt"
 alias pn="pbpaste > /tmp/new.txt"
 alias pd="patdiff /tmp/old.txt /tmp/new.txt"
 
+alias base="tmux attach -t base || tmux new -s base"
+
 # autojump
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
