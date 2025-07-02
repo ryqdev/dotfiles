@@ -159,3 +159,11 @@ alias base="tmux attach -t base || tmux new -s base"
 
 . "$HOME/.local/bin/env"
 source $HOME/.local/bin/env
+
+[ -f "/Users/ryqdev/.ghcup/env" ] && . "/Users/ryqdev/.ghcup/env" # ghcup-env
+
+eval $(opam env)
+
+export GEMINI_API_KEY="AIzaSyADLUly8OL7RYRjFzr79uKVum0DWCF8u-U"
+export GOOGLE_CLOUD_PROJECT="gen-lang-client-0867197041
+"
