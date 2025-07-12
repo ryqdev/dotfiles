@@ -151,6 +151,7 @@ alias pn="pbpaste > /tmp/new.txt"
 alias pd="patdiff /tmp/old.txt /tmp/new.txt"
 
 alias base="tmux attach -t base || tmux new -s base"
+alias r="ranger"
 
 # autojump
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
@@ -159,3 +160,7 @@ alias base="tmux attach -t base || tmux new -s base"
 
 . "$HOME/.local/bin/env"
 source $HOME/.local/bin/env
+
+eval $(opam env)
+
+export EDITOR=nvim
