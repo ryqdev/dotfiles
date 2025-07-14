@@ -157,7 +157,6 @@ alias r="ranger"
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 
-
 . "$HOME/.local/bin/env"
 source $HOME/.local/bin/env
 
