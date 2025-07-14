@@ -164,3 +164,5 @@ source $HOME/.local/bin/env
 eval $(opam env)
 
 export EDITOR=nvim
+
+export GPG_TTY=$(tty)
