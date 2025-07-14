@@ -220,5 +220,3 @@ bar {
 exec i3-config-wizard
 exec setxkbmap -option caps:ctrl_modifier
 exec xset r rate 200 25
-exec export http_proxy="http://127.0.0.1:10809"
-exec export https_proxy="http://127.0.0.1:10809"
