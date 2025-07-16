@@ -1,4 +1,4 @@
-vim.cmd.colorscheme("dracula")
+vim.cmd.colorscheme("solarized")
 
 vim.opt.clipboard = 'unnamedplus' -- use system keyboard for yank
 
