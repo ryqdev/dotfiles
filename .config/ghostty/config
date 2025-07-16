@@ -1,4 +1,4 @@
-theme = dracula
+theme = dark:iTerm2 Solarized Dark, light:iTerm2 Solarized Light
 
 font-family = MesloLGS NF
 font-style = Regular
