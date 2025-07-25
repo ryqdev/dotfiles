@@ -1,4 +1,4 @@
-theme = dark:tokyonight, light:tokyonight-day
+theme = dark:iTerm2 Solarized Dark, light:iTerm2 Solarized Light
 
 font-family = MesloLGS NF
 font-style = Regular
@@ -9,4 +9,3 @@ cursor-style = block
 cursor-style-blink = false
 
 cursor-color = #ff0078
-keybind = shift+enter=text:\n
