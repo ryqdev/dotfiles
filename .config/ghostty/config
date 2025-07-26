@@ -1,4 +1,4 @@
-theme = dark:tokyonight, light:tokyonight-day
+theme = dark:tokyonight, light:Builtin Solarized Light
 
 font-family = MesloLGS NF
 font-style = Regular
