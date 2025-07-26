@@ -3,10 +3,10 @@ return {
   version = "*",
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    'Mofiqul/dracula.nvim',
+    'folke/tokyonight.nvim',
   },
   config = function()
-    vim.cmd.colorscheme("dracula")
+    vim.cmd.colorscheme("tokyonight-night")
     vim.opt.termguicolors = true
     require('bufferline').setup {}
   end
