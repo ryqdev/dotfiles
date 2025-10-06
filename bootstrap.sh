@@ -253,34 +253,6 @@ setup_nvim() {
         log_info "Try running: sudo apt-get install --reinstall lua5.1 liblua5.1-dev luajit libluajit-5.1-dev"
         return 1
     fi
-
-    # Check if nvim config exists
-    if [[ -d "$HOME/.config/nvim" ]]; then
-        log_info "Installing nvim plugins..."
-
-        # Install lazy.nvim (modern plugin manager) if not already installed
-        local lazypath="$HOME/.local/share/nvim/lazy/lazy.nvim"
-        if [[ ! -d "$lazypath" ]]; then
-            log_info "Installing lazy.nvim plugin manager..."
-            git clone --filter=blob:none --branch=stable \
-                https://github.com/folke/lazy.nvim.git "$lazypath"
-        fi
-
-        # Test if we can run nvim commands successfully
-        if nvim --headless -c 'lua print("Testing nvim...")' -c 'sleep 100m' -c 'q' > /dev/null 2>&1; then
-            log_info "Running plugin installation..."
-            # Run plugin sync with error handling
-            if ! nvim --headless -c 'autocmd User LazyDone quitall' -c 'Lazy sync' > /dev/null 2>&1; then
-                log_warning "Plugin sync encountered issues, but nvim should still work"
-            fi
-        else
-            log_warning "Nvim plugin installation skipped due to configuration issues"
-        fi
-
-        log_success "Neovim setup complete"
-    else
-        log_warning "No nvim config found, skipping plugin installation"
-    fi
 }
 
 # Main installation function
