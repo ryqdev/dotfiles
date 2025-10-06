@@ -163,30 +163,52 @@ clone_dotfiles() {
     log_success "Dotfiles repository cloned"
 }
 
-# Create symlinks for dotfiles
-setup_symlinks() {
-    log_info "Setting up dotfiles symlinks..."
+# Copy dotfiles to home directory
+copy_dotfiles() {
+    log_info "Copying dotfiles to home directory..."
 
     local dotfiles_dir="$HOME/dotfiles"
 
     # Backup existing files
     [[ -f "$HOME/.zshrc" ]] && cp "$HOME/.zshrc" "$HOME/.zshrc.backup.$(date +%Y%m%d_%H%M%S)"
+    [[ -f "$HOME/.zimrc" ]] && cp "$HOME/.zimrc" "$HOME/.zimrc.backup.$(date +%Y%m%d_%H%M%S)"
     [[ -f "$HOME/.gitconfig" ]] && cp "$HOME/.gitconfig" "$HOME/.gitconfig.backup.$(date +%Y%m%d_%H%M%S)"
     [[ -d "$HOME/.config/nvim" ]] && cp -r "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
 
-    # Create symlinks
-    ln -sf "$dotfiles_dir/.zshrc" "$HOME/.zshrc"
-    ln -sf "$dotfiles_dir/.gitconfig" "$HOME/.gitconfig"
+    # Copy dotfiles from repository
+    if [[ -f "$dotfiles_dir/.zshrc" ]]; then
+        cp "$dotfiles_dir/.zshrc" "$HOME/.zshrc"
+        log_success "Copied .zshrc"
+    else
+        log_warning ".zshrc not found in dotfiles repository"
+    fi
+
+    if [[ -f "$dotfiles_dir/.zimrc" ]]; then
+        cp "$dotfiles_dir/.zimrc" "$HOME/.zimrc"
+        log_success "Copied .zimrc"
+    else
+        log_warning ".zimrc not found in dotfiles repository"
+    fi
+
+    if [[ -f "$dotfiles_dir/.gitconfig" ]]; then
+        cp "$dotfiles_dir/.gitconfig" "$HOME/.gitconfig"
+        log_success "Copied .gitconfig"
+    else
+        log_warning ".gitconfig not found in dotfiles repository"
+    fi
 
     # Create config directory if it doesn't exist
     mkdir -p "$HOME/.config"
 
-    # Link nvim config
+    # Copy nvim config
     if [[ -d "$dotfiles_dir/.config/nvim" ]]; then
-        ln -sf "$dotfiles_dir/.config/nvim" "$HOME/.config/nvim"
+        cp -r "$dotfiles_dir/.config/nvim" "$HOME/.config/"
+        log_success "Copied nvim configuration"
+    else
+        log_warning "nvim config not found in dotfiles repository"
     fi
 
-    log_success "Dotfiles symlinks created"
+    log_success "Dotfiles copied successfully"
 }
 
 # Install nvim plugins
@@ -221,7 +243,7 @@ main() {
     install_essentials
     install_tools
     clone_dotfiles
-    setup_symlinks
+    copy_dotfiles
     setup_zsh
     setup_nvim
 
