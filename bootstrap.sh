@@ -104,6 +104,10 @@ install_tools() {
             sudo install lazygit /usr/local/bin
             rm lazygit.tar.gz lazygit
 
+            # Install lua dependencies to prevent E970 error
+            log_info "Installing lua dependencies for neovim..."
+            $INSTALL_CMD lua5.1 liblua5.1-dev luajit libluajit-5.1-dev
+
             # Install neovim
             sudo add-apt-repository ppa:neovim-ppa/unstable -y
             $UPDATE_CMD
@@ -236,18 +240,42 @@ copy_dotfiles() {
 setup_nvim() {
     log_info "Setting up neovim..."
 
+    # Verify neovim installation
+    if ! command -v nvim > /dev/null 2>&1; then
+        log_error "Neovim not found, skipping nvim setup"
+        return 1
+    fi
+
+    # Check if nvim can start properly (test for E970 error)
+    if ! nvim --headless -c 'lua print("Lua working")' -c 'q' > /dev/null 2>&1; then
+        log_error "Neovim lua interpreter error detected (E970)"
+        log_info "This may be due to missing lua dependencies or conflicting configurations"
+        log_info "Try running: sudo apt-get install --reinstall lua5.1 liblua5.1-dev luajit libluajit-5.1-dev"
+        return 1
+    fi
+
     # Check if nvim config exists
     if [[ -d "$HOME/.config/nvim" ]]; then
         log_info "Installing nvim plugins..."
 
-        # Install packer.nvim if not already installed
-        if [[ ! -d "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" ]]; then
-            git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-                "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        # Install lazy.nvim (modern plugin manager) if not already installed
+        local lazypath="$HOME/.local/share/nvim/lazy/lazy.nvim"
+        if [[ ! -d "$lazypath" ]]; then
+            log_info "Installing lazy.nvim plugin manager..."
+            git clone --filter=blob:none --branch=stable \
+                https://github.com/folke/lazy.nvim.git "$lazypath"
         fi
 
-        # Run PackerSync to install plugins
-        nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+        # Test if we can run nvim commands successfully
+        if nvim --headless -c 'lua print("Testing nvim...")' -c 'sleep 100m' -c 'q' > /dev/null 2>&1; then
+            log_info "Running plugin installation..."
+            # Run plugin sync with error handling
+            if ! nvim --headless -c 'autocmd User LazyDone quitall' -c 'Lazy sync' > /dev/null 2>&1; then
+                log_warning "Plugin sync encountered issues, but nvim should still work"
+            fi
+        else
+            log_warning "Nvim plugin installation skipped due to configuration issues"
+        fi
 
         log_success "Neovim setup complete"
     else
