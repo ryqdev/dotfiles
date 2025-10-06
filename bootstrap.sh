@@ -8,7 +8,7 @@ REPO_URL="https://github.com/ryqdev/dotfiles"
 
 echo "🚀 Installing dotfiles configuration..."
 
-# Pre-flight checks for essential tools
+# Pre-flight checks for essential tools with automatic installation option
 check_essential_tools() {
     local missing_tools=()
 
@@ -23,39 +23,70 @@ check_essential_tools() {
     if [ ${#missing_tools[@]} -ne 0 ]; then
         echo "❌ Essential tools missing: ${missing_tools[*]}"
         echo ""
-        echo "🔧 Please install the missing tools first:"
+
         local os=$(detect_os)
+        local install_cmd=""
+
         case $os in
             "apt")
-                echo "💡 For Ubuntu/Debian, run:"
-                echo "   sudo apt-get update"
-                echo "   sudo apt-get install -y git curl"
+                install_cmd="sudo apt-get update && sudo apt-get install -y git curl"
                 ;;
             "yum")
-                echo "💡 For CentOS/RHEL, run:"
-                echo "   sudo yum install -y git curl"
+                install_cmd="sudo yum install -y git curl"
                 ;;
             "dnf")
-                echo "💡 For Fedora, run:"
-                echo "   sudo dnf install -y git curl"
+                install_cmd="sudo dnf install -y git curl"
                 ;;
             "pacman")
-                echo "💡 For Arch Linux, run:"
-                echo "   sudo pacman -S --noconfirm git curl"
+                install_cmd="sudo pacman -S --noconfirm git curl"
                 ;;
             "zypper")
-                echo "💡 For openSUSE, run:"
-                echo "   sudo zypper install -y git curl"
+                install_cmd="sudo zypper install -y git curl"
                 ;;
             "macos")
-                echo "💡 For macOS, run:"
-                echo "   brew install git curl"
-                echo "   # Or install Xcode Command Line Tools: xcode-select --install"
+                install_cmd="brew install git curl"
+                ;;
+            *)
+                echo "🔧 Please install the missing tools manually:"
+                echo "   git curl"
+                echo "After installing, run this script again."
+                exit 1
                 ;;
         esac
+
+        echo "🔧 Would you like to install these tools automatically?"
+        echo "💡 Command that will be run: $install_cmd"
         echo ""
-        echo "After installing the missing tools, run this script again."
-        exit 1
+        read -p "Install missing tools automatically? (y/N): " -n 1 -r
+        echo ""
+
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            echo "📦 Installing missing tools..."
+            if eval "$install_cmd"; then
+                echo "✅ Tools installed successfully!"
+                # Verify installation
+                local still_missing=()
+                if ! command -v git > /dev/null 2>&1; then
+                    still_missing+=("git")
+                fi
+                if ! command -v curl > /dev/null 2>&1; then
+                    still_missing+=("curl")
+                fi
+                if [ ${#still_missing[@]} -ne 0 ]; then
+                    echo "⚠️  Some tools still missing: ${still_missing[*]}"
+                    echo "Please install them manually and run this script again."
+                    exit 1
+                fi
+            else
+                echo "❌ Installation failed. Please install manually and try again."
+                exit 1
+            fi
+        else
+            echo "💡 Manual installation instructions:"
+            echo "   $install_cmd"
+            echo "After installing, run this script again."
+            exit 1
+        fi
     fi
 
     echo "✅ Essential tools check passed"
@@ -84,79 +115,119 @@ detect_os() {
     fi
 }
 
-# Function to install packages
+# Function to install packages with automatic installation option
 install_packages() {
     local os=$(detect_os)
     local essential_packages=("git" "curl" "zsh")
     local additional_packages=("fzf" "neovim" "tmux" "autojump")
 
     echo "📦 Detected OS: $os"
-    echo "🔧 Installing essential packages: ${essential_packages[*]}"
+    echo "🔧 Checking essential packages: ${essential_packages[*]}"
+
+    # Check which packages are missing
+    local missing_packages=()
+    for pkg in "${essential_packages[@]}" "${additional_packages[@]}"; do
+        if ! command -v "$pkg" > /dev/null 2>&1; then
+            missing_packages+=("$pkg")
+        fi
+    done
+
+    if [ ${#missing_packages[@]} -eq 0 ]; then
+        echo "✅ All packages are already installed"
+        return
+    fi
+
+    echo "⚠️  Missing packages: ${missing_packages[*]}"
+    echo ""
 
     case $os in
         "apt")
-            echo "📋 Ubuntu/Debian detected. Checking available packages..."
-            echo "💡 To install packages manually, run:"
-            echo "   sudo apt-get update"
-            echo "   sudo apt-get install -y ${essential_packages[*]} ${additional_packages[*]}"
-            # Check if packages are available without sudo
-            if command -v git > /dev/null 2>&1; then
-                echo "✅ git is already installed"
-            else
-                echo "⚠️  git is not installed (manual installation required)"
-            fi
-            if command -v zsh > /dev/null 2>&1; then
-                echo "✅ zsh is already installed"
-            else
-                echo "⚠️  zsh is not installed (manual installation required)"
-            fi
-            if command -v curl > /dev/null 2>&1; then
-                echo "✅ curl is already installed"
-            else
-                echo "⚠️  curl is not installed (manual installation required)"
+            local install_cmd="sudo apt-get update && sudo apt-get install -y ${missing_packages[*]}"
+            echo "💡 Command: $install_cmd"
+            read -p "Install missing packages automatically? (y/N): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                if eval "$install_cmd"; then
+                    echo "✅ Packages installed successfully!"
+                else
+                    echo "❌ Installation failed. Please install manually."
+                fi
             fi
             ;;
         "yum")
-            echo "📋 CentOS/RHEL detected. Checking available packages..."
-            echo "💡 To install packages manually, run:"
-            echo "   sudo yum install -y ${essential_packages[*]} ${additional_packages[*]}"
-            check_packages_available "${essential_packages[@]}"
+            local install_cmd="sudo yum install -y ${missing_packages[*]}"
+            echo "💡 Command: $install_cmd"
+            read -p "Install missing packages automatically? (y/N): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                if eval "$install_cmd"; then
+                    echo "✅ Packages installed successfully!"
+                else
+                    echo "❌ Installation failed. Please install manually."
+                fi
+            fi
             ;;
         "dnf")
-            echo "📋 Fedora detected. Checking available packages..."
-            echo "💡 To install packages manually, run:"
-            echo "   sudo dnf install -y ${essential_packages[*]} ${additional_packages[*]}"
-            check_packages_available "${essential_packages[@]}"
+            local install_cmd="sudo dnf install -y ${missing_packages[*]}"
+            echo "💡 Command: $install_cmd"
+            read -p "Install missing packages automatically? (y/N): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                if eval "$install_cmd"; then
+                    echo "✅ Packages installed successfully!"
+                else
+                    echo "❌ Installation failed. Please install manually."
+                fi
+            fi
             ;;
         "pacman")
-            echo "📋 Arch Linux detected. Checking available packages..."
-            echo "💡 To install packages manually, run:"
-            echo "   sudo pacman -S --noconfirm ${essential_packages[*]} ${additional_packages[*]}"
-            check_packages_available "${essential_packages[@]}"
+            local install_cmd="sudo pacman -S --noconfirm ${missing_packages[*]}"
+            echo "💡 Command: $install_cmd"
+            read -p "Install missing packages automatically? (y/N): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                if eval "$install_cmd"; then
+                    echo "✅ Packages installed successfully!"
+                else
+                    echo "❌ Installation failed. Please install manually."
+                fi
+            fi
             ;;
         "zypper")
-            echo "📋 openSUSE detected. Checking available packages..."
-            echo "💡 To install packages manually, run:"
-            echo "   sudo zypper install -y ${essential_packages[*]} ${additional_packages[*]}"
-            check_packages_available "${essential_packages[@]}"
+            local install_cmd="sudo zypper install -y ${missing_packages[*]}"
+            echo "💡 Command: $install_cmd"
+            read -p "Install missing packages automatically? (y/N): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                if eval "$install_cmd"; then
+                    echo "✅ Packages installed successfully!"
+                else
+                    echo "❌ Installation failed. Please install manually."
+                fi
+            fi
             ;;
         "macos")
-            if command -v brew &> /dev/null; then
-                brew install "${essential_packages[@]}"
-                brew install "${additional_packages[@]}"
+            if command -v brew > /dev/null 2>&1; then
+                local install_cmd="brew install ${missing_packages[*]}"
+                echo "💡 Command: $install_cmd"
+                read -p "Install missing packages automatically? (y/N): " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    if eval "$install_cmd"; then
+                        echo "✅ Packages installed successfully!"
+                    else
+                        echo "❌ Installation failed. Please install manually."
+                    fi
+                fi
             else
                 echo "⚠️  Homebrew not found. Please install Homebrew first:"
                 echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
                 echo "    Then run this script again."
-                exit 1
             fi
             ;;
         *)
             echo "⚠️  Unknown package manager. Please install manually:"
-            echo "   Essential: ${essential_packages[*]}"
-            echo "   Additional: ${additional_packages[*]}"
-            echo "   Then run this script again."
-            exit 1
+            echo "   ${missing_packages[*]}"
             ;;
     esac
 }
