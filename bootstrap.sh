@@ -8,6 +8,156 @@ REPO_URL="https://github.com/ryqdev/dotfiles"
 
 echo "🚀 Installing dotfiles configuration..."
 
+# Function to detect OS and package manager
+detect_os() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        if command -v apt-get &> /dev/null; then
+            echo "apt"
+        elif command -v yum &> /dev/null; then
+            echo "yum"
+        elif command -v dnf &> /dev/null; then
+            echo "dnf"
+        elif command -v pacman &> /dev/null; then
+            echo "pacman"
+        elif command -v zypper &> /dev/null; then
+            echo "zypper"
+        else
+            echo "unknown"
+        fi
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "macos"
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to install packages
+install_packages() {
+    local os=$(detect_os)
+    local essential_packages=("git" "curl" "zsh")
+    local additional_packages=("fzf" "neovim" "tmux")
+
+    echo "📦 Detected OS: $os"
+    echo "🔧 Installing essential packages: ${essential_packages[*]}"
+
+    case $os in
+        "apt")
+            sudo apt-get update
+            sudo apt-get install -y "${essential_packages[@]}"
+            # Try to install additional packages (might not be available on all repos)
+            sudo apt-get install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via apt"
+            ;;
+        "yum")
+            sudo yum install -y "${essential_packages[@]}"
+            sudo yum install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via yum"
+            ;;
+        "dnf")
+            sudo dnf install -y "${essential_packages[@]}"
+            sudo dnf install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via dnf"
+            ;;
+        "pacman")
+            sudo pacman -S --noconfirm "${essential_packages[@]}"
+            sudo pacman -S --noconfirm "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via pacman"
+            ;;
+        "zypper")
+            sudo zypper install -y "${essential_packages[@]}"
+            sudo zypper install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via zypper"
+            ;;
+        "macos")
+            if command -v brew &> /dev/null; then
+                brew install "${essential_packages[@]}"
+                brew install "${additional_packages[@]}"
+            else
+                echo "⚠️  Homebrew not found. Please install Homebrew first:"
+                echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+                echo "    Then run this script again."
+                exit 1
+            fi
+            ;;
+        *)
+            echo "⚠️  Unknown package manager. Please install manually:"
+            echo "   Essential: ${essential_packages[*]}"
+            echo "   Additional: ${additional_packages[*]}"
+            echo "   Then run this script again."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to install additional tools based on detected configurations
+install_additional_tools() {
+    local os=$(detect_os)
+
+    echo "🔍 Checking for additional tool requirements..."
+
+    # Check if LazyVim configuration exists and install required tools
+    if [ -d "$DOTFILES_DIR/.config/lazyvim" ]; then
+        echo "📦 LazyVim configuration detected, installing dependencies..."
+        case $os in
+            "apt")
+                sudo apt-get install -y ripgrep fd-find || true
+                ;;
+            "yum"|"dnf")
+                sudo yum install -y ripgrep fd-find || true
+                ;;
+            "pacman")
+                sudo pacman -S --noconfirm ripgrep fd || true
+                ;;
+            "macos")
+                brew install ripgrep fd || true
+                ;;
+        esac
+    fi
+
+    # Check if Powerlevel10k theme is used and install required fonts
+    if [ -f "$DOTFILES_DIR/.p10k.zsh" ]; then
+        echo "🎨 Powerlevel10k theme detected, installing recommended fonts..."
+        case $os in
+            "apt")
+                sudo apt-get install -y fonts-powerline || true
+                ;;
+            "yum"|"dnf")
+                sudo yum install -y powerline-fonts || true
+                ;;
+            "pacman")
+                sudo pacman -S --noconfirm powerline-fonts || true
+                ;;
+            "macos")
+                brew tap homebrew/cask-fonts
+                brew install --cask font-meslo-lg-nerd-font || true
+                ;;
+        esac
+    fi
+
+    # Install lazygit if not present (since user mentioned it)
+    if ! command -v lazygit > /dev/null 2>&1; then
+        echo "📦 Installing lazygit..."
+        case $os in
+            "apt")
+                sudo apt-get install -y lazygit || echo "⚠️  lazygit not available via apt (install manually)"
+                ;;
+            "yum"|"dnf")
+                sudo yum install -y lazygit || echo "⚠️  lazygit not available via yum/dnf (install manually)"
+                ;;
+            "pacman")
+                sudo pacman -S --noconfirm lazygit || echo "⚠️  lazygit not available via pacman (install manually)"
+                ;;
+            "macos")
+                brew install lazygit || echo "⚠️  Failed to install lazygit"
+                ;;
+            *)
+                echo "⚠️  Please install lazygit manually from: https://github.com/jesseduffield/lazygit"
+                ;;
+        esac
+    fi
+}
+
+# Install essential packages
+install_packages
+
+# Install additional tools based on configuration
+install_additional_tools
+
 # Create backup directory
 mkdir -p "$BACKUP_DIR"
 
@@ -147,11 +297,17 @@ echo "  • FZF: ~/.fzf.zsh"
 echo "  • Git: ~/.gitconfig"
 echo "  • Neovim: ~/.config/nvim"
 echo ""
+echo "🔧 Tools installed/verified:"
+echo "  • Essential: git, curl, zsh"
+echo "  • Additional: fzf, neovim, tmux"
+echo "  • Optional: lazygit, ripgrep, fd-find, powerline fonts"
+echo ""
 echo "💾 Backup created at: $BACKUP_DIR"
 echo ""
 echo "🔄 To apply the new configuration:"
 echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. For Neovim: just run 'nvim'"
+echo "  3. For lazygit: run 'lazygit'"
 echo ""
 echo "📖 For manual installation, use:"
 echo "  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/ryqdev/dotfiles/refs/heads/main/bootstrap.sh)\""
