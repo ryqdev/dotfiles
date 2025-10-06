@@ -35,7 +35,7 @@ detect_os() {
 install_packages() {
     local os=$(detect_os)
     local essential_packages=("git" "curl" "zsh")
-    local additional_packages=("fzf" "neovim" "tmux")
+    local additional_packages=("fzf" "neovim" "tmux" "autojump")
 
     echo "📦 Detected OS: $os"
     echo "🔧 Installing essential packages: ${essential_packages[*]}"
@@ -84,11 +84,64 @@ install_packages() {
     esac
 }
 
+# Function to install C compilers for Neovim
+install_c_compilers() {
+    local os=$(detect_os)
+
+    echo "🔧 Installing C compilers for Neovim compilation..."
+
+    case $os in
+        "apt")
+            sudo apt-get install -y build-essential gcc clang make || true
+            ;;
+        "yum")
+            sudo yum groupinstall -y "Development Tools" || true
+            sudo yum install -y gcc clang || true
+            ;;
+        "dnf")
+            sudo dnf groupinstall -y "Development Tools" || true
+            sudo dnf install -y gcc clang || true
+            ;;
+        "pacman")
+            sudo pacman -S --noconfirm base-devel gcc clang || true
+            ;;
+        "zypper")
+            sudo zypper install -y -t pattern devel_basis || true
+            sudo zypper install -y gcc clang || true
+            ;;
+        "macos")
+            # Check if Xcode command line tools are installed
+            if ! xcode-select -p > /dev/null 2>&1; then
+                echo "📦 Installing Xcode Command Line Tools..."
+                xcode-select --install
+            fi
+            ;;
+    esac
+}
+
+# Function to set zsh as default shell
+set_zsh_default() {
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        echo "🐚 Setting zsh as default shell..."
+        if command -v zsh > /dev/null 2>&1; then
+            chsh -s "$(which zsh)"
+            echo "✅ zsh set as default shell (restart terminal to apply)"
+        else
+            echo "⚠️  zsh not found, cannot set as default shell"
+        fi
+    else
+        echo "✅ zsh is already the default shell"
+    fi
+}
+
 # Function to install additional tools based on detected configurations
 install_additional_tools() {
     local os=$(detect_os)
 
     echo "🔍 Checking for additional tool requirements..."
+
+    # Install C compilers first (needed for Neovim)
+    install_c_compilers
 
     # Check if LazyVim configuration exists and install required tools
     if [ -d "$DOTFILES_DIR/.config/lazyvim" ]; then
@@ -150,6 +203,9 @@ install_additional_tools() {
                 ;;
         esac
     fi
+
+    # Set zsh as default shell
+    set_zsh_default
 }
 
 # Install essential packages
@@ -299,7 +355,8 @@ echo "  • Neovim: ~/.config/nvim"
 echo ""
 echo "🔧 Tools installed/verified:"
 echo "  • Essential: git, curl, zsh"
-echo "  • Additional: fzf, neovim, tmux"
+echo "  • Additional: fzf, neovim, tmux, autojump"
+echo "  • C Compilers: gcc, clang, build-essential (for Neovim)"
 echo "  • Optional: lazygit, ripgrep, fd-find, powerline fonts"
 echo ""
 echo "💾 Backup created at: $BACKUP_DIR"
