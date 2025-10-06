@@ -263,10 +263,10 @@ main() {
     update_system
     install_essentials
     install_tools
+    setup_zsh
+    setup_nvim
     clone_dotfiles
     copy_dotfiles
-    setup_nvim
-    setup_zsh
 
     log_success "Bootstrap installation complete!"
     log_info "Please restart your terminal or run 'source ~/.zshrc' to reload your configuration"
