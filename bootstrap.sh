@@ -42,26 +42,50 @@ install_packages() {
 
     case $os in
         "apt")
-            sudo apt-get update
-            sudo apt-get install -y "${essential_packages[@]}"
-            # Try to install additional packages (might not be available on all repos)
-            sudo apt-get install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via apt"
+            echo "📋 Ubuntu/Debian detected. Checking available packages..."
+            echo "💡 To install packages manually, run:"
+            echo "   sudo apt-get update"
+            echo "   sudo apt-get install -y ${essential_packages[*]} ${additional_packages[*]}"
+            # Check if packages are available without sudo
+            if command -v git > /dev/null 2>&1; then
+                echo "✅ git is already installed"
+            else
+                echo "⚠️  git is not installed (manual installation required)"
+            fi
+            if command -v zsh > /dev/null 2>&1; then
+                echo "✅ zsh is already installed"
+            else
+                echo "⚠️  zsh is not installed (manual installation required)"
+            fi
+            if command -v curl > /dev/null 2>&1; then
+                echo "✅ curl is already installed"
+            else
+                echo "⚠️  curl is not installed (manual installation required)"
+            fi
             ;;
         "yum")
-            sudo yum install -y "${essential_packages[@]}"
-            sudo yum install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via yum"
+            echo "📋 CentOS/RHEL detected. Checking available packages..."
+            echo "💡 To install packages manually, run:"
+            echo "   sudo yum install -y ${essential_packages[*]} ${additional_packages[*]}"
+            check_packages_available "${essential_packages[@]}"
             ;;
         "dnf")
-            sudo dnf install -y "${essential_packages[@]}"
-            sudo dnf install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via dnf"
+            echo "📋 Fedora detected. Checking available packages..."
+            echo "💡 To install packages manually, run:"
+            echo "   sudo dnf install -y ${essential_packages[*]} ${additional_packages[*]}"
+            check_packages_available "${essential_packages[@]}"
             ;;
         "pacman")
-            sudo pacman -S --noconfirm "${essential_packages[@]}"
-            sudo pacman -S --noconfirm "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via pacman"
+            echo "📋 Arch Linux detected. Checking available packages..."
+            echo "💡 To install packages manually, run:"
+            echo "   sudo pacman -S --noconfirm ${essential_packages[*]} ${additional_packages[*]}"
+            check_packages_available "${essential_packages[@]}"
             ;;
         "zypper")
-            sudo zypper install -y "${essential_packages[@]}"
-            sudo zypper install -y "${additional_packages[@]}" 2>/dev/null || echo "⚠️  Some additional packages not available via zypper"
+            echo "📋 openSUSE detected. Checking available packages..."
+            echo "💡 To install packages manually, run:"
+            echo "   sudo zypper install -y ${essential_packages[*]} ${additional_packages[*]}"
+            check_packages_available "${essential_packages[@]}"
             ;;
         "macos")
             if command -v brew &> /dev/null; then
@@ -84,51 +108,68 @@ install_packages() {
     esac
 }
 
-# Function to install C compilers for Neovim
-install_c_compilers() {
-    local os=$(detect_os)
-
-    echo "🔧 Installing C compilers for Neovim compilation..."
-
-    case $os in
-        "apt")
-            sudo apt-get install -y build-essential gcc clang make || true
-            ;;
-        "yum")
-            sudo yum groupinstall -y "Development Tools" || true
-            sudo yum install -y gcc clang || true
-            ;;
-        "dnf")
-            sudo dnf groupinstall -y "Development Tools" || true
-            sudo dnf install -y gcc clang || true
-            ;;
-        "pacman")
-            sudo pacman -S --noconfirm base-devel gcc clang || true
-            ;;
-        "zypper")
-            sudo zypper install -y -t pattern devel_basis || true
-            sudo zypper install -y gcc clang || true
-            ;;
-        "macos")
-            # Check if Xcode command line tools are installed
-            if ! xcode-select -p > /dev/null 2>&1; then
-                echo "📦 Installing Xcode Command Line Tools..."
-                xcode-select --install
-            fi
-            ;;
-    esac
+# Function to check if packages are available (without sudo)
+check_packages_available() {
+    local packages=("$@")
+    for package in "${packages[@]}"; do
+        if command -v "$package" > /dev/null 2>&1; then
+            echo "✅ $package is already installed"
+        else
+            echo "⚠️  $package is not installed (manual installation required)"
+        fi
+    done
 }
 
-# Function to set zsh as default shell
-set_zsh_default() {
+# Function to check C compilers for Neovim (without sudo)
+check_c_compilers() {
+    local os=$(detect_os)
+
+    echo "🔧 Checking C compilers for Neovim compilation..."
+
+    # Check if any C compiler is available
+    if command -v gcc > /dev/null 2>&1; then
+        echo "✅ gcc is available"
+    elif command -v clang > /dev/null 2>&1; then
+        echo "✅ clang is available"
+    elif command -v cc > /dev/null 2>&1; then
+        echo "✅ cc is available"
+    else
+        echo "⚠️  No C compiler found (gcc/clang required for Neovim)"
+        echo "💡 To install C compilers manually:"
+        case $os in
+            "apt")
+                echo "   sudo apt-get install -y build-essential gcc clang make"
+                ;;
+            "yum")
+                echo "   sudo yum groupinstall -y 'Development Tools'"
+                echo "   sudo yum install -y gcc clang"
+                ;;
+            "dnf")
+                echo "   sudo dnf groupinstall -y 'Development Tools'"
+                echo "   sudo dnf install -y gcc clang"
+                ;;
+            "pacman")
+                echo "   sudo pacman -S --noconfirm base-devel gcc clang"
+                ;;
+            "zypper")
+                echo "   sudo zypper install -y -t pattern devel_basis"
+                echo "   sudo zypper install -y gcc clang"
+                ;;
+            "macos")
+                echo "   xcode-select --install"
+                ;;
+        esac
+    fi
+}
+
+# Function to check zsh as default shell (without sudo)
+check_zsh_default() {
     if [ "$SHELL" != "$(which zsh)" ]; then
-        echo "🐚 Setting zsh as default shell..."
-        if command -v zsh > /dev/null 2>&1; then
-            chsh -s "$(which zsh)"
-            echo "✅ zsh set as default shell (restart terminal to apply)"
-        else
-            echo "⚠️  zsh not found, cannot set as default shell"
-        fi
+        echo "🐚 Current shell: $SHELL"
+        echo "💡 To set zsh as default shell manually, run:"
+        echo "   chsh -s \$(which zsh)"
+        echo "   # or: sudo usermod -s \$(which zsh) \$USER"
+        echo "   Then restart your terminal"
     else
         echo "✅ zsh is already the default shell"
     fi
@@ -140,8 +181,8 @@ install_additional_tools() {
 
     echo "🔍 Checking for additional tool requirements..."
 
-    # Install C compilers first (needed for Neovim)
-    install_c_compilers
+    # Check C compilers first (needed for Neovim)
+    check_c_compilers
 
     # Check if LazyVim configuration exists and install required tools
     if [ -d "$DOTFILES_DIR/.config/lazyvim" ]; then
@@ -204,8 +245,8 @@ install_additional_tools() {
         esac
     fi
 
-    # Set zsh as default shell
-    set_zsh_default
+    # Check zsh as default shell
+    check_zsh_default
 }
 
 # Install essential packages
@@ -361,10 +402,13 @@ echo "  • Optional: lazygit, ripgrep, fd-find, powerline fonts"
 echo ""
 echo "💾 Backup created at: $BACKUP_DIR"
 echo ""
-echo "🔄 To apply the new configuration:"
-echo "  1. Restart your terminal or run: source ~/.zshrc"
-echo "  2. For Neovim: just run 'nvim'"
-echo "  3. For lazygit: run 'lazygit'"
+echo "🔄 To complete the setup:"
+echo "  1. Install missing packages manually (see instructions above)"
+echo "  2. Set zsh as default shell: chsh -s \$(which zsh)"
+echo "  3. Restart your terminal"
+echo "  4. Run: source ~/.zshrc"
+echo "  5. For Neovim: run 'nvim'"
+echo "  6. For lazygit: run 'lazygit'"
 echo ""
 echo "📖 For manual installation, use:"
 echo "  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/ryqdev/dotfiles/refs/heads/main/bootstrap.sh)\""
