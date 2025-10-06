@@ -26,14 +26,6 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Check if running as root
-check_root() {
-    if [[ $EUID -ne 0 ]]; then
-        log_error "This script must be run as root (use sudo)"
-        exit 1
-    fi
-}
-
 # Detect OS and package manager
 detect_os() {
     if [[ -f /etc/os-release ]]; then
@@ -224,7 +216,6 @@ setup_nvim() {
 main() {
     log_info "Starting bootstrap installation..."
 
-    check_root
     detect_os
     update_system
     install_essentials
