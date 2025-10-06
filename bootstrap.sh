@@ -8,6 +8,59 @@ REPO_URL="https://github.com/ryqdev/dotfiles"
 
 echo "🚀 Installing dotfiles configuration..."
 
+# Pre-flight checks for essential tools
+check_essential_tools() {
+    local missing_tools=()
+
+    if ! command -v git > /dev/null 2>&1; then
+        missing_tools+=("git")
+    fi
+
+    if ! command -v curl > /dev/null 2>&1; then
+        missing_tools+=("curl")
+    fi
+
+    if [ ${#missing_tools[@]} -ne 0 ]; then
+        echo "❌ Essential tools missing: ${missing_tools[*]}"
+        echo ""
+        echo "🔧 Please install the missing tools first:"
+        local os=$(detect_os)
+        case $os in
+            "apt")
+                echo "💡 For Ubuntu/Debian, run:"
+                echo "   sudo apt-get update"
+                echo "   sudo apt-get install -y git curl"
+                ;;
+            "yum")
+                echo "💡 For CentOS/RHEL, run:"
+                echo "   sudo yum install -y git curl"
+                ;;
+            "dnf")
+                echo "💡 For Fedora, run:"
+                echo "   sudo dnf install -y git curl"
+                ;;
+            "pacman")
+                echo "💡 For Arch Linux, run:"
+                echo "   sudo pacman -S --noconfirm git curl"
+                ;;
+            "zypper")
+                echo "💡 For openSUSE, run:"
+                echo "   sudo zypper install -y git curl"
+                ;;
+            "macos")
+                echo "💡 For macOS, run:"
+                echo "   brew install git curl"
+                echo "   # Or install Xcode Command Line Tools: xcode-select --install"
+                ;;
+        esac
+        echo ""
+        echo "After installing the missing tools, run this script again."
+        exit 1
+    fi
+
+    echo "✅ Essential tools check passed"
+}
+
 # Function to detect OS and package manager
 detect_os() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -223,31 +276,40 @@ install_additional_tools() {
         esac
     fi
 
-    # Install lazygit if not present (since user mentioned it)
+    # Check lazygit availability
     if ! command -v lazygit > /dev/null 2>&1; then
-        echo "📦 Installing lazygit..."
+        echo "📦 lazygit is not installed"
+        echo "💡 To install lazygit manually:"
         case $os in
             "apt")
-                sudo apt-get install -y lazygit || echo "⚠️  lazygit not available via apt (install manually)"
+                echo "   sudo apt-get install -y lazygit"
+                echo "   # If not available: download from https://github.com/jesseduffield/lazygit/releases"
                 ;;
             "yum"|"dnf")
-                sudo yum install -y lazygit || echo "⚠️  lazygit not available via yum/dnf (install manually)"
+                echo "   sudo yum install -y lazygit"
+                echo "   # If not available: download from https://github.com/jesseduffield/lazygit/releases"
                 ;;
             "pacman")
-                sudo pacman -S --noconfirm lazygit || echo "⚠️  lazygit not available via pacman (install manually)"
+                echo "   sudo pacman -S --noconfirm lazygit"
                 ;;
             "macos")
-                brew install lazygit || echo "⚠️  Failed to install lazygit"
+                echo "   brew install lazygit"
+                echo "   # Or download from https://github.com/jesseduffield/lazygit/releases"
                 ;;
             *)
-                echo "⚠️  Please install lazygit manually from: https://github.com/jesseduffield/lazygit"
+                echo "   Download from: https://github.com/jesseduffield/lazygit/releases"
                 ;;
         esac
+    else
+        echo "✅ lazygit is available"
     fi
 
     # Check zsh as default shell
     check_zsh_default
 }
+
+# Run pre-flight checks before main execution
+check_essential_tools
 
 # Install essential packages
 install_packages
