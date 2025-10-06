@@ -8,7 +8,7 @@ REPO_URL="https://github.com/ryqdev/dotfiles"
 
 echo "🚀 Installing dotfiles configuration..."
 
-# Pre-flight checks for essential tools with automatic installation option
+# Pre-flight checks for essential tools - automatic installation
 check_essential_tools() {
     local missing_tools=()
 
@@ -22,28 +22,34 @@ check_essential_tools() {
 
     if [ ${#missing_tools[@]} -ne 0 ]; then
         echo "❌ Essential tools missing: ${missing_tools[*]}"
-        echo ""
+        echo "🔧 Installing required tools automatically..."
 
         local os=$(detect_os)
         local install_cmd=""
 
         case $os in
             "apt")
+                echo "💡 Running: sudo apt-get update && sudo apt-get install -y git curl"
                 install_cmd="sudo apt-get update && sudo apt-get install -y git curl"
                 ;;
             "yum")
+                echo "💡 Running: sudo yum install -y git curl"
                 install_cmd="sudo yum install -y git curl"
                 ;;
             "dnf")
+                echo "💡 Running: sudo dnf install -y git curl"
                 install_cmd="sudo dnf install -y git curl"
                 ;;
             "pacman")
+                echo "💡 Running: sudo pacman -S --noconfirm git curl"
                 install_cmd="sudo pacman -S --noconfirm git curl"
                 ;;
             "zypper")
+                echo "💡 Running: sudo zypper install -y git curl"
                 install_cmd="sudo zypper install -y git curl"
                 ;;
             "macos")
+                echo "💡 Running: brew install git curl"
                 install_cmd="brew install git curl"
                 ;;
             *)
@@ -54,37 +60,25 @@ check_essential_tools() {
                 ;;
         esac
 
-        echo "🔧 Would you like to install these tools automatically?"
-        echo "💡 Command that will be run: $install_cmd"
-        echo ""
-        read -p "Install missing tools automatically? (y/N): " -n 1 -r
-        echo ""
-
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            echo "📦 Installing missing tools..."
-            if eval "$install_cmd"; then
-                echo "✅ Tools installed successfully!"
-                # Verify installation
-                local still_missing=()
-                if ! command -v git > /dev/null 2>&1; then
-                    still_missing+=("git")
-                fi
-                if ! command -v curl > /dev/null 2>&1; then
-                    still_missing+=("curl")
-                fi
-                if [ ${#still_missing[@]} -ne 0 ]; then
-                    echo "⚠️  Some tools still missing: ${still_missing[*]}"
-                    echo "Please install them manually and run this script again."
-                    exit 1
-                fi
-            else
-                echo "❌ Installation failed. Please install manually and try again."
+        echo "📦 Installing missing tools..."
+        if eval "$install_cmd"; then
+            echo "✅ Tools installed successfully!"
+            # Verify installation
+            local still_missing=()
+            if ! command -v git > /dev/null 2>&1; then
+                still_missing+=("git")
+            fi
+            if ! command -v curl > /dev/null 2>&1; then
+                still_missing+=("curl")
+            fi
+            if [ ${#still_missing[@]} -ne 0 ]; then
+                echo "⚠️  Some tools still missing: ${still_missing[*]}"
+                echo "Please install them manually and run this script again."
                 exit 1
             fi
         else
-            echo "💡 Manual installation instructions:"
-            echo "   $install_cmd"
-            echo "After installing, run this script again."
+            echo "❌ Installation failed. Please install manually and try again."
+            echo "💡 Manual command: $install_cmd"
             exit 1
         fi
     fi
