@@ -145,8 +145,29 @@ setup_zsh() {
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
 
-    # Set zsh as default shell
-    chsh -s $(which zsh)
+    # Set zsh as default shell without password prompt
+    # Try to use usermod first (requires root), fallback to chsh if needed
+    if command -v usermod > /dev/null 2>&1 && [[ $EUID -eq 0 ]]; then
+        log_info "Setting zsh as default shell using usermod..."
+        usermod -s $(which zsh) $SUDO_USER || log_warning "Failed to set shell with usermod"
+    else
+        log_info "Setting zsh as default shell using chsh..."
+        # Try to change shell without password by modifying /etc/passwd directly (requires root)
+        if [[ $EUID -eq 0 ]]; then
+            local current_user=$(whoami)
+            if [[ $current_user != "root" ]]; then
+                current_user=$SUDO_USER
+            fi
+            sed -i "s|^${current_user}:.*|${current_user}:x:$(id -u):$(id -g):${current_user}:$HOME:$(which zsh)|" /etc/passwd
+            log_success "zsh set as default shell for $current_user"
+        else
+            # If not root, provide instructions for manual shell change
+            log_warning "Cannot change shell automatically without root privileges"
+            log_info "Please run: chsh -s $(which zsh)"
+            log_info "Or log out and back in to use the new shell"
+        fi
+    fi
+
     log_success "zsh setup complete"
 }
 
@@ -244,8 +265,8 @@ main() {
     install_tools
     clone_dotfiles
     copy_dotfiles
-    setup_zsh
     setup_nvim
+    setup_zsh
 
     log_success "Bootstrap installation complete!"
     log_info "Please restart your terminal or run 'source ~/.zshrc' to reload your configuration"
