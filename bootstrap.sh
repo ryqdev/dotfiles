@@ -39,17 +39,17 @@ detect_os() {
 
     case $OS in
         ubuntu|debian)
-            PKG_MANAGER="apt-get"
+            PKG_MANAGER="sudo apt"
             UPDATE_CMD="$PKG_MANAGER update"
             INSTALL_CMD="$PKG_MANAGER install -y"
             ;;
         fedora)
-            PKG_MANAGER="dnf"
+            PKG_MANAGER="sudo dnf"
             UPDATE_CMD="$PKG_MANAGER update -y"
             INSTALL_CMD="$PKG_MANAGER install -y"
             ;;
         arch|manjaro)
-            PKG_MANAGER="pacman"
+            PKG_MANAGER="sudo pacman"
             UPDATE_CMD="$PKG_MANAGER -Sy"
             INSTALL_CMD="$PKG_MANAGER -S --noconfirm"
             ;;
