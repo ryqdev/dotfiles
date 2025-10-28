@@ -30,7 +30,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 local non_lsp_mappings = {
   { "<leader> ",  ":Telescope live_grep<CR>",                             desc = "Find" },
   { "<leader>/",  "<Plug>(comment_toggle_linewise_current)",              desc = "Toggle comment" },
-  { "<leader>j",  ":rightbelow vsplit | terminal<CR>",                    desc = "Open terminal in right split" },
   { "<C-d>",      "<C-d>zz",                                              desc = "Half page down and center" },
   { "<C-u>",      "<C-u>zz",                                              desc = "Half page up and center" },
   { "n",          "nzzzv",                                                desc = "Next search result and center" },
