@@ -143,6 +143,8 @@ alias gac="git add . && git commit"
 alias gs="git status"
 alias gr="git remote -v | awk '/origin.*push/ {print \$2}' | xargs open"
 
+alias rgf='rg --files | rg'
+
 # Tmux
 alias lg="lazygit"
 
