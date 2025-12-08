@@ -1,4 +1,4 @@
-hs.hotkey.bind({ "cmd", "ctrl" }, "H", function()
+hs.hotkey.bind({ "alt" }, "H", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -8,10 +8,10 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "H", function()
   f.y = max.y
   f.w = max.w / 2
   f.h = max.h
-  win:setFrame(f)
+  win:setFrame(f, 0)
 end)
 
-hs.hotkey.bind({ "cmd", "ctrl" }, "L", function()
+hs.hotkey.bind({ "alt" }, "L", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -21,10 +21,10 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "L", function()
   f.y = max.y
   f.w = max.w / 2
   f.h = max.h
-  win:setFrame(f)
+  win:setFrame(f, 0)
 end)
 
-hs.hotkey.bind({ "cmd", "ctrl" }, "J", function()
+hs.hotkey.bind({ "alt" }, "J", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -34,10 +34,10 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "J", function()
   f.y = max.y + max.h / 2
   f.w = max.w
   f.h = max.h / 2
-  win:setFrame(f)
+  win:setFrame(f, 0)
 end)
 
-hs.hotkey.bind({ "cmd", "ctrl" }, "K", function()
+hs.hotkey.bind({ "alt" }, "K", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -47,10 +47,10 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "K", function()
   f.y = max.y
   f.w = max.w
   f.h = max.h / 2
-  win:setFrame(f)
+  win:setFrame(f, 0)
 end)
 
-hs.hotkey.bind({ "cmd", "alt" }, "F", function()
+hs.hotkey.bind({ "alt" }, "F", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -60,7 +60,7 @@ hs.hotkey.bind({ "cmd", "alt" }, "F", function()
   f.y = max.y
   f.w = max.w
   f.h = max.h
-  win:setFrame(f)
+  win:setFrame(f, 0)
 end)
 
 
@@ -93,7 +93,9 @@ end
 
 
 
-switcher = hs.window.switcher.new(hs.window.filter.new():setCurrentSpace(true))
+switcher = hs.window.switcher.new(
+  hs.window.filter.new():setCurrentSpace(true):setDefaultFilter({visible = true})
+)
 function mapCmdTab(event)
   local flags = event:getFlags()
   local chars = event:getCharacters()
@@ -152,3 +154,4 @@ end
 control_tap = hs.eventtap.new({ 12 }, control_handler)
 
 control_tap:start()
+
