@@ -93,9 +93,32 @@ end
 
 
 
-switcher = hs.window.switcher.new(
-  hs.window.filter.new():setCurrentSpace(true):setDefaultFilter({visible = true})
-)
+-- Create a filter that excludes Finder entirely to prevent ghost window issue
+-- Finder always runs on macOS and shows ghost windows even when all windows are closed
+local function createWindowFilter()
+  return hs.window.filter.new(function(win)
+    -- Only include windows that actually exist and can be focused
+    if not win then return false end
+    if not win:isVisible() then return false end
+    if not win:isStandard() then return false end
+    -- Exclude Finder to avoid ghost windows
+    local app = win:application()
+    if app and app:name() == 'Finder' then return false end
+    return true
+  end, 'customFilter')
+end
+
+local windowFilter = createWindowFilter()
+switcher = hs.window.switcher.new(windowFilter)
+
+-- Refresh the switcher periodically to clear stale windows
+windowFilter:subscribe(hs.window.filter.windowDestroyed, function()
+  -- Recreate the window filter and switcher to clear any stale references
+  windowFilter = createWindowFilter()
+  switcher = hs.window.switcher.new(windowFilter)
+end)
+
+
 function mapCmdTab(event)
   local flags = event:getFlags()
   local chars = event:getCharacters()
