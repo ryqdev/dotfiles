@@ -16,14 +16,37 @@ return {
       indent = { enable = true },
     })
 
-    -- Force re-enable treesitter highlighting on buffer enter
-    -- This fixes the issue when opening files from nvim-tree after `nvim .`
+    local function enable_ts_highlight(buf)
+      if vim.bo[buf].buftype ~= "" or vim.bo[buf].filetype == "" then
+        return
+      end
+
+      vim.api.nvim_buf_call(buf, function()
+        pcall(vim.cmd, "TSBufEnable highlight")
+      end)
+    end
+
+    local group = vim.api.nvim_create_augroup("TreesitterHighlightFix", { clear = true })
+
     vim.api.nvim_create_autocmd("BufEnter", {
-      callback = function()
-        if vim.bo.buftype == "" then
-          vim.cmd("TSBufEnable highlight")
-        end
+      group = group,
+      callback = function(args)
+        enable_ts_highlight(args.buf)
       end,
     })
+
+    -- Ensure the initial buffer is highlighted even if treesitter loads late.
+    if vim.bo.filetype ~= "" then
+      enable_ts_highlight(0)
+    else
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        buffer = 0,
+        once = true,
+        callback = function(args)
+          enable_ts_highlight(args.buf)
+        end,
+      })
+    end
   end
 }
