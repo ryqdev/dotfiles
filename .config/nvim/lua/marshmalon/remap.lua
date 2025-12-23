@@ -44,5 +44,3 @@ local non_lsp_mappings = {
 }
 
 which_key.add(non_lsp_mappings)
-
-vim.keymap.set('i', '<Right>', '<Right>', { noremap = true }) -- Make the right arrow behave normally in insert mode

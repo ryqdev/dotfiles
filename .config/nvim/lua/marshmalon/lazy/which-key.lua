@@ -1,6 +1,5 @@
 return {
   "folke/which-key.nvim",
-  event = "VeryLazy",
   init = function()
     vim.o.timeout = true
     vim.o.timeoutlen = 300
@@ -22,12 +21,6 @@ return {
         z = false,            -- bindings for folds, spelling and others prefixed with z
         g = false,            -- bindings for prefixed with g
       },
-    },
-    -- New replace configuration replaces key_labels
-    replace = {
-      -- ["<space>"] = "SPC",
-      -- ["<cr>"] = "RET",
-      -- ["<tab>"] = "TAB",
     },
     -- New keys configuration replaces popup_mappings
     keys = {
