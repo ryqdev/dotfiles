@@ -1,6 +1,56 @@
 local which_key = require "which-key"
 local builtin = require('telescope.builtin')
 
+local terminal = {
+  buf = nil,
+}
+
+local function terminal_win()
+  if not terminal.buf or not vim.api.nvim_buf_is_valid(terminal.buf) then
+    terminal.buf = nil
+    return nil
+  end
+
+  local win = vim.fn.bufwinid(terminal.buf)
+  if win == -1 then
+    return nil
+  end
+
+  return win
+end
+
+local function open_terminal()
+  if not terminal.buf or not vim.api.nvim_buf_is_valid(terminal.buf) then
+    terminal.buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[terminal.buf].bufhidden = "hide"
+    vim.bo[terminal.buf].buflisted = false
+    vim.bo[terminal.buf].swapfile = false
+  end
+
+  vim.cmd("botright split")
+  vim.cmd("resize 15")
+  local win = vim.api.nvim_get_current_win()
+  vim.api.nvim_win_set_buf(win, terminal.buf)
+
+  if vim.bo[terminal.buf].buftype ~= "terminal" then
+    vim.fn.termopen(vim.o.shell)
+  end
+
+  vim.wo[win].number = false
+  vim.wo[win].relativenumber = false
+  vim.cmd("startinsert")
+end
+
+local function toggle_terminal()
+  local win = terminal_win()
+  if win then
+    vim.api.nvim_win_close(win, true)
+    return
+  end
+
+  open_terminal()
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user_lsp_attach', { clear = true }),
   callback = function(event)
@@ -44,3 +94,4 @@ local non_lsp_mappings = {
 }
 
 which_key.add(non_lsp_mappings)
+vim.keymap.set({ "n", "t" }, "<leader>tt", toggle_terminal, { desc = "Toggle terminal", silent = true })
