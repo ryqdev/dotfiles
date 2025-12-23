@@ -34,6 +34,7 @@ local non_lsp_mappings = {
   { "<leader>go", function() require("gitlinker").get_buf_range_url("v") end, desc = "Open git link", mode = "v" },
   { "<leader>gb", function() require("gitsigns").blame() end,             desc = "Git blame file" },
   { "<leader>/",  "<Plug>(comment_toggle_linewise_current)",              desc = "Toggle comment" },
+  { "<leader>/",  "<Plug>(comment_toggle_linewise_visual)",               desc = "Toggle comment", mode = "v" },
   { "<C-d>",      "<C-d>zz",                                              desc = "Half page down and center" },
   { "<C-u>",      "<C-u>zz",                                              desc = "Half page up and center" },
   { "n",          "nzzzv",                                                desc = "Next search result and center" },
