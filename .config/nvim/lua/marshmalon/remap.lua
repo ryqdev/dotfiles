@@ -1,9 +1,17 @@
-local which_key = require "which-key"
 local builtin = require('telescope.builtin')
 
 local terminal = {
   buf = nil,
 }
+
+local function map(modes, lhs, rhs, desc, opts)
+  opts = opts or {}
+  opts.desc = desc
+  if opts.silent == nil then
+    opts.silent = true
+  end
+  vim.keymap.set(modes, lhs, rhs, opts)
+end
 
 local function terminal_win()
   if not terminal.buf or not vim.api.nvim_buf_is_valid(terminal.buf) then
@@ -59,25 +67,27 @@ local function copy_relative_path()
   end
 
   local relative_path = vim.fn.fnamemodify(bufname, ":.")
+  vim.v.errmsg = ""
   vim.fn.setreg("+", relative_path)
-  vim.notify("Copied relative path: " .. relative_path, vim.log.levels.INFO)
+  if vim.v.errmsg == "" then
+    vim.notify("Copied relative path: " .. relative_path, vim.log.levels.INFO)
+    return
+  end
+
+  vim.fn.setreg('"', relative_path)
+  vim.notify("Copied relative path (clipboard unavailable): " .. relative_path, vim.log.levels.WARN)
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user_lsp_attach', { clear = true }),
   callback = function(event)
     local opts = { buffer = event.buf }
-
-    local mappings = {
-      { "gd",         vim.lsp.buf.definition,       desc = "Go to definition",       buffer = event.buf },
-      { "gl",         vim.diagnostic.open_float,    desc = "Open diagnostic float",  buffer = event.buf },
-      { "gr",         vim.lsp.buf.references,       desc = "Go to references",       buffer = event.buf },
-      { "gi",         vim.lsp.buf.implementation,   desc = "Go to implementation",   buffer = event.buf },
-      { "K",          vim.lsp.buf.hover,            desc = "Show hover information", buffer = event.buf },
-      { "<leader>ln", vim.lsp.buf.rename,           desc = "Rename",                 buffer = event.buf },
-    }
-
-    which_key.add(mappings)
+    map("n", "gd", vim.lsp.buf.definition, "Go to definition", opts)
+    map("n", "gl", vim.diagnostic.open_float, "Open diagnostic float", opts)
+    map("n", "gr", vim.lsp.buf.references, "Go to references", opts)
+    map("n", "gi", vim.lsp.buf.implementation, "Go to implementation", opts)
+    map("n", "K", vim.lsp.buf.hover, "Show hover information", opts)
+    map("n", "<leader>ln", vim.lsp.buf.rename, "Rename", opts)
 
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = event.buf,
@@ -89,22 +99,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-local non_lsp_mappings = {
-  { "<leader> ",  ":Telescope live_grep<CR>",                             desc = "Find" },
-  { "<leader>f",  builtin.find_files,                                     desc = "Find files" },
-  { "<leader>go", function() require("gitlinker").get_buf_range_url("n") end, desc = "Open git link" },
-  { "<leader>go", function() require("gitlinker").get_buf_range_url("v") end, desc = "Open git link", mode = "v" },
-  { "<leader>gb", function() require("gitsigns").blame() end,             desc = "Git blame file" },
-  { "<leader>/",  "<Plug>(comment_toggle_linewise_current)",              desc = "Toggle comment" },
-  { "<leader>/",  "<Plug>(comment_toggle_linewise_visual)",               desc = "Toggle comment", mode = "v" },
-  { "<leader>yp", copy_relative_path,                                     desc = "Yank relative path" },
-  { "<C-d>",      "<C-d>zz",                                              desc = "Half page down and center" },
-  { "<C-u>",      "<C-u>zz",                                              desc = "Half page up and center" },
-  { "n",          "nzzzv",                                                desc = "Next search result and center" },
-  { "N",          "Nzzzv",                                                desc = "Previous search result and center" },
-  { "Q",          "<nop>",                                                desc = "Disable Ex mode" },
-  { ";",          builtin.buffers,                                        desc = "Find buffers" },
-}
-
-which_key.add(non_lsp_mappings)
-vim.keymap.set({ "n", "t" }, "<leader>tt", toggle_terminal, { desc = "Toggle terminal", silent = true })
+map("n", "<leader> ", ":Telescope live_grep<CR>", "Find")
+map("n", "<leader>f", builtin.find_files, "Find files")
+map("n", "<leader>go", function() require("gitlinker").get_buf_range_url("n") end, "Open git link")
+map("v", "<leader>go", function() require("gitlinker").get_buf_range_url("v") end, "Open git link")
+map("n", "<leader>gb", function() require("gitsigns").blame() end, "Git blame file")
+map("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", "Toggle comment", { remap = true })
+map("v", "<leader>/", "<Plug>(comment_toggle_linewise_visual)", "Toggle comment", { remap = true })
+map("n", "<leader>yp", copy_relative_path, "Yank relative path")
+map("n", "<C-d>", "<C-d>zz", "Half page down and center")
+map("n", "<C-u>", "<C-u>zz", "Half page up and center")
+map("n", "n", "nzzzv", "Next search result and center")
+map("n", "N", "Nzzzv", "Previous search result and center")
+map("n", "Q", "<nop>", "Disable Ex mode")
+map("n", ";", builtin.buffers, "Find buffers")
+map({ "n", "t" }, "<leader>tt", toggle_terminal, "Toggle terminal")
