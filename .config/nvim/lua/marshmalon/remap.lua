@@ -51,6 +51,18 @@ local function toggle_terminal()
   open_terminal()
 end
 
+local function copy_relative_path()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname == "" then
+    vim.notify("No file name for current buffer", vim.log.levels.WARN)
+    return
+  end
+
+  local relative_path = vim.fn.fnamemodify(bufname, ":.")
+  vim.fn.setreg("+", relative_path)
+  vim.notify("Copied relative path: " .. relative_path, vim.log.levels.INFO)
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user_lsp_attach', { clear = true }),
   callback = function(event)
@@ -85,6 +97,7 @@ local non_lsp_mappings = {
   { "<leader>gb", function() require("gitsigns").blame() end,             desc = "Git blame file" },
   { "<leader>/",  "<Plug>(comment_toggle_linewise_current)",              desc = "Toggle comment" },
   { "<leader>/",  "<Plug>(comment_toggle_linewise_visual)",               desc = "Toggle comment", mode = "v" },
+  { "<leader>yp", copy_relative_path,                                     desc = "Yank relative path" },
   { "<C-d>",      "<C-d>zz",                                              desc = "Half page down and center" },
   { "<C-u>",      "<C-u>zz",                                              desc = "Half page up and center" },
   { "n",          "nzzzv",                                                desc = "Next search result and center" },

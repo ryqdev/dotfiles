@@ -28,7 +28,7 @@ return {
 
     local group = vim.api.nvim_create_augroup("TreesitterHighlightFix", { clear = true })
 
-    vim.api.nvim_create_autocmd("BufEnter", {
+    vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
       group = group,
       callback = function(args)
         enable_ts_highlight(args.buf)
@@ -36,17 +36,6 @@ return {
     })
 
     -- Ensure the initial buffer is highlighted even if treesitter loads late.
-    if vim.bo.filetype ~= "" then
-      enable_ts_highlight(0)
-    else
-      vim.api.nvim_create_autocmd("FileType", {
-        group = group,
-        buffer = 0,
-        once = true,
-        callback = function(args)
-          enable_ts_highlight(args.buf)
-        end,
-      })
-    end
+    enable_ts_highlight(0)
   end
 }
