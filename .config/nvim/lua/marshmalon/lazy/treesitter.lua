@@ -5,19 +5,25 @@ return {
   priority = 900, -- Load after colorscheme (1000) but before other plugins
   config = function()
     local configs = require("nvim-treesitter.configs")
+    local parsers = require("nvim-treesitter.parsers")
 
     configs.setup({
       ensure_installed = {
         "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript"
       },
-      sync_install = true,
-      auto_install = true,
+      sync_install = false,
+      auto_install = false,
       highlight = { enable = true },
       indent = { enable = true },
     })
 
     local function enable_ts_highlight(buf)
       if vim.bo[buf].buftype ~= "" or vim.bo[buf].filetype == "" then
+        return
+      end
+
+      local lang = parsers.get_buf_lang(buf)
+      if not lang or not parsers.has_parser(lang) then
         return
       end
 
