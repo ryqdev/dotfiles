@@ -24,6 +24,9 @@ return {
 
       local lang = parsers.get_buf_lang(buf)
       if not lang or not parsers.has_parser(lang) then
+        vim.api.nvim_buf_call(buf, function()
+          vim.cmd("syntax enable")
+        end)
         return
       end
 
