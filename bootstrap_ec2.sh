@@ -35,6 +35,6 @@ echo "==> Copying .zshrc..."
 cp ~/dotfiles/.zshrc ~/.zshrc
 
 echo "==> Setting zsh as default shell..."
-sudo chsh -s "$(which zsh)" ubuntu
+sudo chsh -s "$(which zsh)" $(whoami)
 
 echo "==> Bootstrap complete! Please log out and back in for zsh to take effect."
