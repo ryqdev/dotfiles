@@ -10,3 +10,5 @@ cursor-style-blink = false
 
 cursor-color = #ff0078
 keybind = shift+enter=text:\n
+
+keybind = cmd+r=prompt_surface_title
