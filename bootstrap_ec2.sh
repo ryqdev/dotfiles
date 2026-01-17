@@ -29,6 +29,7 @@ mkdir -p ~/.config
 echo "==> Copying nvim and tmux configs..."
 cp -r ~/dotfiles/.config/nvim ~/.config/
 cp -r ~/dotfiles/.config/tmux ~/.config/
+cp -r ~/dotfiles/.config/lazygit ~/.config/
 
 echo "==> Copying .zshrc..."
 cp ~/dotfiles/.zshrc ~/.zshrc
