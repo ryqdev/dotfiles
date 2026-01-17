@@ -168,8 +168,6 @@ export EDITOR=nvim
 
 export GPG_TTY=$(tty)
 
-# export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897
-
 export XDG_CONFIG_HOME="$HOME/.config"
 
 export TERM=xterm-256color
