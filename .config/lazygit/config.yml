@@ -3,4 +3,4 @@ gui:
 git:
   pagers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      pager: delta --dark --paging=never --24-bit-color=never --syntax-theme="OneHalfDark"
