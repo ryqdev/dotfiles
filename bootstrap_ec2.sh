@@ -31,8 +31,9 @@ cp -r ~/dotfiles/.config/nvim ~/.config/
 cp -r ~/dotfiles/.config/tmux ~/.config/
 cp -r ~/dotfiles/.config/lazygit ~/.config/
 
-echo "==> Copying .zshrc..."
+echo "==> Copying .zshrc and .gitconfig ..."
 cp ~/dotfiles/.zshrc ~/.zshrc
+cp ~/dotfiles/.gitconfig ~/.gitconfig
 
 echo "==> Setting zsh as default shell..."
 sudo chsh -s "$(which zsh)" $(whoami)
