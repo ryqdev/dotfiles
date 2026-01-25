@@ -1,6 +1,38 @@
-gui:
-  showBottomLine: true
+confirmonquit: false
 git:
+  autofetch: true
+  merging:
+    manualcommit: false
+  skiphookprefix: WIP
   pagers:
     - colorArg: always
       pager: delta --dark --paging=never --24-bit-color=never --syntax-theme="OneHalfDark"
+gui:
+  showRootItemInFileTree: false
+  border: "rounded"
+  showBottomLine: true
+  commitlength:
+    show: true
+  mouseevents: false
+  scrollheight: 2
+  scrollpastbottom: true
+  theme:
+    lightTheme: false
+    activeBorderColor:
+      - cyan
+      - bold
+    inactiveBorderColor:
+      - white
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - reverse
+    selectedRangeBgColor:
+      - blue
+reporting: "off"
+splashupdatesindex: 0
+quitOnTopLevelReturn: true
+startuppopupversion: 1
+nerdFontsVersion: "3"
+showIcons: true
+showFileIcons: true
