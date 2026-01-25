@@ -13,5 +13,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     spec = "marshmalon.lazy",
-    change_detection = { notify = false }
+    change_detection = {
+      enabled = false,
+      notify = false,
+    },
+    checker = {
+      enabled = false,
+    },
 })

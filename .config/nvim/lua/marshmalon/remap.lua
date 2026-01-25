@@ -1,6 +1,3 @@
-local builtin = require('telescope.builtin')
-
-
 local function map(modes, lhs, rhs, desc, opts)
   opts = opts or {}
   opts.desc = desc
@@ -29,8 +26,8 @@ local function copy_relative_path()
   vim.notify("Copied relative path (clipboard unavailable): " .. relative_path, vim.log.levels.WARN)
 end
 
-map("n", "<leader> ", ":Telescope live_grep<CR>", "Find")
-map("n", "<leader>f", builtin.find_files, "Find files")
+map("n", "<leader> ", function() require("telescope.builtin").live_grep() end, "Find")
+map("n", "<leader>f", function() require("telescope.builtin").find_files() end, "Find files")
 map("n", "<leader>go", function() require("gitlinker").get_buf_range_url("n") end, "Open git link")
 map("v", "<leader>go", function() require("gitlinker").get_buf_range_url("v") end, "Open git link")
 map("n", "<leader>gb", function() require("gitsigns").blame() end, "Git blame file")
@@ -42,6 +39,6 @@ map("n", "<C-u>", "<C-u>zz", "Half page up and center")
 map("n", "n", "nzzzv", "Next search result and center")
 map("n", "N", "Nzzzv", "Previous search result and center")
 map("n", "Q", "<nop>", "Disable Ex mode")
-map("n", ";", builtin.buffers, "Find buffers")
+map("n", ";", function() require("telescope.builtin").buffers() end, "Find buffers")
 map("n", "<C-h>", "<C-w>h", "Move to left window")
 map("n", "<C-l>", "<C-w>l", "Move to right window")
