@@ -57,5 +57,24 @@ return {
       buftypes = {},
       filetypes = { "TelescopePrompt" },
     },
-  }
+  },
+  config = function(_, opts)
+    require("which-key").setup(opts)
+
+    local win = require("which-key.win")
+    if not win._marshmalon_safe_show then
+      local original_show = win.show
+      win.show = function(self, show_opts)
+        local eventignore = vim.go.eventignore
+        local ok, result = pcall(original_show, self, show_opts)
+        vim.go.eventignore = eventignore
+        if not ok then
+          vim.notify("which-key popup failed: " .. result, vim.log.levels.WARN)
+          return nil
+        end
+        return result
+      end
+      win._marshmalon_safe_show = true
+    end
+  end,
 }
