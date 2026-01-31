@@ -1,5 +1,5 @@
 # homebrew
-xcode-select —-install
+xcode-select --install
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -43,7 +43,7 @@ brew install zsh-autosuggestions
 
 brew install tmux
 brew install gcc
-brew insatll tree
+brew install tree
 
 # install neovim
 brew install neovim
