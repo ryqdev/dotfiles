@@ -159,8 +159,8 @@ alias r="ranger"
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 
-. "$HOME/.local/bin/env"
-source $HOME/.local/bin/env
+# Source cargo/rust environment if exists
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 eval $(opam env)
 

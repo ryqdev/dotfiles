@@ -48,7 +48,7 @@ return {
     show_help = true, -- show help message on the command line when the popup is visible
     show_keys = true, -- show the currently pressed key and its label as a message in the command line
     triggers = {
-      { "<auto>",   mode = "nixsotc" },
+      { "<auto>",   mode = "nxsotc" },
       { "<leader>", mode = { "n", "v" } },
     },
     -- disable the WhichKey popup for certain buf types and file types.
