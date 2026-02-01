@@ -4,18 +4,6 @@ set -e
 # Codespace paths
 DOTFILES_DIR="/workspaces/.codespaces/.persistedshare/dotfiles"
 
-echo "==> Updating apt..."
-sudo apt update
-
-echo "==> Installing build-essential..."
-sudo apt install -y build-essential
-
-echo "==> Installing zsh..."
-sudo apt install -y zsh
-
-echo "==> Creating ~/.config directory..."
-mkdir -p ~/.config
-
 echo "==> Copying nvim, tmux, and lazygit configs..."
 cp -r "$DOTFILES_DIR/.config/nvim" ~/.config/
 cp -r "$DOTFILES_DIR/.config/tmux" ~/.config/
