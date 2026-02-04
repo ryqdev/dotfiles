@@ -6,7 +6,7 @@ git:
   skiphookprefix: WIP
   pagers:
     - colorArg: always
-      pager: delta --dark --paging=never --24-bit-color=never --syntax-theme="OneHalfDark"
+      pager: "sh -c 'if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then delta --dark --paging=never; else delta --light --paging=never; fi'"
 gui:
   showRootItemInFileTree: false
   border: "rounded"
