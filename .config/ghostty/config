@@ -1,8 +1,8 @@
-theme = dark:OneHalfDark, light:zenbones_light
+theme = dark:One Half Dark, light:One Half Light
 
 font-family = MesloLGS NF
 font-style = Regular
-font-size = 18
+font-size = 16
 font-thicken = true
 
 cursor-style = block
@@ -12,3 +12,7 @@ cursor-color = #ff0078
 keybind = shift+enter=text:\n
 
 keybind = cmd+r=prompt_surface_title
+
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+l=goto_split:right
+
