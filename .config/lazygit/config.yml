@@ -6,10 +6,11 @@ git:
   skiphookprefix: WIP
   pagers:
     - colorArg: always
-      pager: "sh -c 'if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then delta --dark --paging=never; else delta --light --paging=never; fi'"
+      pager: "sh -c 'if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then delta --dark --side-by-side --paging=never; else delta --light --side-by-side --paging=never; fi'"
 gui:
   showRootItemInFileTree: false
   border: "rounded"
+  splitDiff: always
   showBottomLine: true
   commitlength:
     show: true
