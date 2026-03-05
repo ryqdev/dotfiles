@@ -12,7 +12,3 @@ cursor-color = #ff0078
 keybind = shift+enter=text:\n
 
 keybind = cmd+r=prompt_surface_title
-
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+l=goto_split:right
-
