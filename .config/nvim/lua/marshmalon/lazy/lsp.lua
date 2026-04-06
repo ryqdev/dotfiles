@@ -17,9 +17,24 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
-      local lspconfig = require("lspconfig")
+      vim.lsp.config("ts_ls", {})
+      vim.lsp.enable("ts_ls")
 
-      lspconfig.ts_ls.setup({})
+      vim.diagnostic.config({
+        virtual_text = true,
+      })
+
+      vim.api.nvim_create_autocmd("InsertEnter", {
+        callback = function()
+          vim.diagnostic.config({ virtual_text = false })
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("InsertLeave", {
+        callback = function()
+          vim.diagnostic.config({ virtual_text = true })
+        end,
+      })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
