@@ -10,7 +10,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
     opts = {
-      ensure_installed = { "ts_ls" },
+      ensure_installed = { "ts_ls", "rust_analyzer" },
     },
   },
   {
@@ -19,6 +19,9 @@ return {
     config = function()
       vim.lsp.config("ts_ls", {})
       vim.lsp.enable("ts_ls")
+
+      vim.lsp.config("rust_analyzer", {})
+      vim.lsp.enable("rust_analyzer")
 
       vim.diagnostic.config({
         virtual_text = true,

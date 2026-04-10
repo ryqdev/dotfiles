@@ -9,7 +9,7 @@ return {
 
     configs.setup({
       ensure_installed = {
-        "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript"
+        "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript", "rust"
       },
       sync_install = false,
       auto_install = false,
