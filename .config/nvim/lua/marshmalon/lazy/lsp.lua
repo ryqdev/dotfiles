@@ -11,6 +11,7 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = { "ts_ls", "rust_analyzer", "ocamllsp" },
+      automatic_enable = false,
     },
   },
   {

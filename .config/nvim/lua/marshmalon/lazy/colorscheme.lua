@@ -13,6 +13,8 @@ return {
       end
     end
 
+    vim.opt.background = style
+
     require('onedark').setup {
       style = style,
       transparent = true,

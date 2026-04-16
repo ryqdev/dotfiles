@@ -17,6 +17,3 @@ vim.opt.scrolloff = 8
 vim.opt.incsearch = true -- incremental search
 
 vim.opt.termguicolors = true
-
-vim.cmd("filetype plugin indent on")
-vim.cmd("syntax on")
