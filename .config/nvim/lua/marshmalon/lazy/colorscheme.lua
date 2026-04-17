@@ -2,23 +2,34 @@ return {
   "navarasu/onedark.nvim",
   priority = 1000, -- make sure to load this before all the other start plugins
   config = function()
-    local style = 'dark'
-    -- Detect macOS system appearance
-    local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
-    if handle then
+    local function detect_style()
+      local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
+      if not handle then return 'dark' end
       local result = handle:read('*a')
       handle:close()
-      if not result:match('Dark') then
-        style = 'light'
-      end
+      return result:match('Dark') and 'dark' or 'light'
     end
 
-    vim.opt.background = style
+    local current
+    local function apply(style)
+      if style == current then return end
+      current = style
+      vim.opt.background = style
+      require('onedark').setup {
+        style = style,
+        transparent = true,
+      }
+      require('onedark').load()
 
-    require('onedark').setup {
-      style = style,
-      transparent = true,
-    }
-    require('onedark').load()
+      pcall(function()
+        require('ibl').setup({ scope = { enabled = false } })
+      end)
+    end
+
+    apply(detect_style())
+
+    vim.api.nvim_create_autocmd({ 'FocusGained', 'VimResume' }, {
+      callback = function() apply(detect_style()) end,
+    })
   end
 }
