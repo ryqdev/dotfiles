@@ -19,3 +19,8 @@ keybind = cmd+alt+k=goto_split:up
 keybind = cmd+alt+l=goto_split:right
 
 keybind = cmd+j=goto_split:next
+
+keybind = cmd+shift+u=scroll_page_up
+keybind = cmd+shift+d=scroll_page_down
+keybind = cmd+shift+k=scroll_page_fractional:-0.1
+keybind = cmd+shift+j=scroll_page_fractional:0.1
