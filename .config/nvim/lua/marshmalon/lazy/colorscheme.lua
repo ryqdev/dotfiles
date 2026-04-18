@@ -20,10 +20,6 @@ return {
         transparent = true,
       }
       require('onedark').load()
-
-      pcall(function()
-        require('ibl').setup({ scope = { enabled = false } })
-      end)
     end
 
     apply(detect_style())

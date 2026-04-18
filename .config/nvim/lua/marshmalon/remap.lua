@@ -15,9 +15,8 @@ local function copy_relative_path()
   end
 
   local relative_path = vim.fn.fnamemodify(bufname, ":.")
-  vim.v.errmsg = ""
-  vim.fn.setreg("+", relative_path)
-  if vim.v.errmsg == "" then
+  local ok = pcall(vim.fn.setreg, "+", relative_path)
+  if ok and vim.fn.has("clipboard") == 1 then
     vim.notify("Copied relative path: " .. relative_path, vim.log.levels.INFO)
     return
   end
