@@ -1,50 +1,37 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
+  lazy = false,
   build = ":TSUpdate",
-  lazy = false, -- Load immediately to prevent highlight race condition
-  priority = 900, -- Load after colorscheme (1000) but before other plugins
   config = function()
-    local configs = require("nvim-treesitter.configs")
-    local parsers = require("nvim-treesitter.parsers")
+    local ensure_installed = {
+      "c", "lua", "vim", "vimdoc", "elixir",
+      "javascript", "html", "python", "typescript", "rust",
+    }
 
-    configs.setup({
-      ensure_installed = {
-        "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript", "rust"
-      },
-      sync_install = false,
-      auto_install = false,
-      highlight = { enable = true },
-      indent = { enable = true },
-    })
+    require("nvim-treesitter").install(ensure_installed)
 
-    local function enable_ts_highlight(buf)
-      if vim.bo[buf].buftype ~= "" or vim.bo[buf].filetype == "" then
-        return
-      end
+    local group = vim.api.nvim_create_augroup("TreesitterStart", { clear = true })
 
-      local lang = parsers.get_buf_lang(buf)
-      if not lang or not parsers.has_parser(lang) then
-        vim.api.nvim_buf_call(buf, function()
-          vim.cmd("syntax enable")
-        end)
-        return
-      end
-
-      vim.api.nvim_buf_call(buf, function()
-        pcall(vim.cmd, "TSBufEnable highlight")
-      end)
-    end
-
-    local group = vim.api.nvim_create_augroup("TreesitterHighlightFix", { clear = true })
-
-    vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+    vim.api.nvim_create_autocmd("FileType", {
       group = group,
       callback = function(args)
-        enable_ts_highlight(args.buf)
+        local buf = args.buf
+        if vim.bo[buf].buftype ~= "" then
+          return
+        end
+
+        local ft = vim.bo[buf].filetype
+        local lang = vim.treesitter.language.get_lang(ft) or ft
+        if not lang or lang == "" then
+          return
+        end
+
+        local ok = pcall(vim.treesitter.start, buf, lang)
+        if ok then
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
       end,
     })
-
-    -- Ensure the initial buffer is highlighted even if treesitter loads late.
-    enable_ts_highlight(0)
-  end
+  end,
 }
