@@ -38,7 +38,7 @@ return {
 
         actions = {
           open_file = {
-            resize_window = false,
+            resize_window = true,
           },
         },
 
