@@ -1,6 +1,6 @@
 ---
 name: effective-macos
-description: Use when the user asks how to set up, customize, or tune a macOS development environment — installing Homebrew, tweaking trackpad/keyboard defaults, configuring terminal tools (Ghostty, tmux, neovim, fzf, autojump, yazi, zim), enabling Touch ID for sudo, hiding the Dock, checking ports, or picking recommended apps/extensions. Triggers on phrases like "set up my mac", "macOS defaults write", "faster key repeat", "Touch ID sudo", "hide dock", or questions about `defaults write` commands.
+description: Use when the user asks how to set up, customize, or tune a macOS development environment — installing Homebrew, tweaking trackpad/keyboard defaults, configuring terminal tools (Ghostty, tmux, neovim, fzf, autojump, yazi, zim), enabling Touch ID for sudo, hiding the Dock, checking ports, or picking recommended apps/extensions such as Shottr. Triggers on phrases like "set up my mac", "macOS defaults write", "faster key repeat", "Touch ID sudo", "hide dock", "Shottr", or questions about `defaults write` commands.
 ---
 
 # Effective macOS: Tips, Tools, and Customizations
@@ -82,6 +82,16 @@ Productivity app for search and task automation.
 ```shell
 brew install --cask alfred
 ```
+
+### Shottr
+
+Screenshot, annotation, OCR, scrolling capture, and pixel-measurement tool for macOS.
+
+```shell
+brew install --cask shottr
+```
+
+Direct download: https://shottr.cc/
 
 ## Command-Line Tools
 
